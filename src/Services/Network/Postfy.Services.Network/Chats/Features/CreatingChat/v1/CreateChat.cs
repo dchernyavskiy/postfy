@@ -1,5 +1,6 @@
 using Ardalis.GuardClauses;
 using BuildingBlocks.Abstractions.CQRS.Commands;
+using BuildingBlocks.Security.Extensions;
 using BuildingBlocks.Security.Jwt;
 using Microsoft.EntityFrameworkCore;
 using Postfy.Services.Network.Chats.Models;
@@ -23,10 +24,7 @@ public class CreateChatHandler : ICommandHandler<CreateChat, CreateChatResponse>
 
     public async Task<CreateChatResponse> Handle(CreateChat request, CancellationToken cancellationToken)
     {
-        var userIdStr = _securityContextAccessor.UserId;
-        Guard.Against.NullOrEmpty(userIdStr, "You are not authenticated.");
-        var userId = Guid.Parse(userIdStr!);
-        Guard.Against.NullOrEmpty(userId, "User id can't be empty.");
+        var userId = _securityContextAccessor.GetIdAsGuid();
 
         request.UserIds.Add(userId);
         var users = await _context.Users

@@ -24,6 +24,7 @@ public class User : Aggregate<Guid>
     public ICollection<Chat> Chats { get; set; }
     public ICollection<Message> Messages { get; set; }
     public ICollection<Post> Posts { get; set; }
+    public ICollection<Post> SavedPosts { get; set; }
     public ICollection<User> Followers { get; set; }
     public ICollection<Reaction> Reactions { get; set; }
     public ICollection<Comment> Comments { get; set; }

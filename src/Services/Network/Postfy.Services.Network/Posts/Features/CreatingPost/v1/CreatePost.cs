@@ -1,6 +1,7 @@
 using Ardalis.GuardClauses;
 using AutoMapper;
 using BuildingBlocks.Abstractions.CQRS.Commands;
+using BuildingBlocks.Security.Extensions;
 using BuildingBlocks.Security.Jwt;
 using Microsoft.FSharp.Core;
 using Postfy.Services.Network.Posts.Models;
@@ -31,10 +32,7 @@ public class CreatePostHandler : ICommandHandler<CreatePost, CreatePostResponse>
 
     public async Task<CreatePostResponse> Handle(CreatePost request, CancellationToken cancellationToken)
     {
-        var userIdStr = _securityContextAccessor.UserId;
-        Guard.Against.NullOrEmpty(userIdStr, "You are not authenticated.");
-        var userId = Guid.Parse(userIdStr!);
-        Guard.Against.NullOrEmpty(userId, "User id can't be empty.");
+        var userId = _securityContextAccessor.GetIdAsGuid();
 
         var post = new Post()
                    {

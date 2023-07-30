@@ -3,6 +3,7 @@ using Humanizer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Postfy.Services.Network.Chats.Models;
+using Postfy.Services.Network.Posts.Models;
 using Postfy.Services.Network.Shared.Data;
 using Postfy.Services.Network.Shared.Models;
 using Postfy.Services.Network.Users.Models;
@@ -38,6 +39,14 @@ public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
             .WithOne(x => x.User)
             .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(x => x.SavedPosts)
+            .WithMany(x => x.Savers)
+            .UsingEntity(
+                "post_user",
+                l => l.HasOne(typeof(Post)).WithMany().HasForeignKey("post_id").HasPrincipalKey(nameof(Post.Id)),
+                r => r.HasOne(typeof(User)).WithMany().HasForeignKey("user_id").HasPrincipalKey(nameof(User.Id)),
+                j => j.HasKey("post_id", "user_id"));
 
         builder.HasMany(x => x.Chats)
             .WithMany(x => x.Users)

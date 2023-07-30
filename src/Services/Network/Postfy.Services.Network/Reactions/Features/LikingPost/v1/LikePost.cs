@@ -1,5 +1,6 @@
 using Ardalis.GuardClauses;
 using BuildingBlocks.Abstractions.CQRS.Commands;
+using BuildingBlocks.Security.Extensions;
 using BuildingBlocks.Security.Jwt;
 using Microsoft.EntityFrameworkCore;
 using Postfy.Services.Network.Reactions.Models;
@@ -22,10 +23,7 @@ public class LikePostHandler : ICommandHandler<LikePost>
 
     public async Task<Unit> Handle(LikePost request, CancellationToken cancellationToken)
     {
-        var userIdStr = _securityContextAccessor.UserId;
-        Guard.Against.NullOrEmpty(userIdStr, "You are not authenticated.");
-        var userId = Guid.Parse(userIdStr!);
-        Guard.Against.NullOrEmpty(userId, "User id can't be empty.");
+        var userId = _securityContextAccessor.GetIdAsGuid();
 
         var reaction =
             await _context.Reactions

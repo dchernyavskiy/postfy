@@ -5,6 +5,7 @@ using BuildingBlocks.Abstractions.CQRS.Commands;
 using BuildingBlocks.Abstractions.CQRS.Queries;
 using BuildingBlocks.Core.CQRS.Queries;
 using BuildingBlocks.Core.Persistence.EfCore;
+using BuildingBlocks.Security.Extensions;
 using BuildingBlocks.Security.Jwt;
 using Microsoft.EntityFrameworkCore;
 using Postfy.Services.Network.Posts.Dtos;
@@ -29,10 +30,7 @@ public class GetPostsHandler : IQueryHandler<GetPosts, GetPostsResponse>
 
     public async Task<GetPostsResponse> Handle(GetPosts request, CancellationToken cancellationToken)
     {
-        var userIdStr = _securityContextAccessor.UserId;
-        Guard.Against.NullOrEmpty(userIdStr, "You are not authenticated.");
-        var userId = Guid.Parse(userIdStr!);
-        Guard.Against.NullOrEmpty(userId, "User id can't be empty.");
+        var userId = _securityContextAccessor.GetIdAsGuid();
 
         var posts = await _context.Posts
                         .Include(x => x.Comments)

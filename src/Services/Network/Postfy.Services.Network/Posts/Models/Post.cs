@@ -20,10 +20,11 @@ public class Post : Aggregate<Guid>
     public User User { get; set; }
 
     public Message? Message { get; set; }
-    public Guid MessageId { get; set; }
+    public Guid? MessageId { get; set; }
 
 
     public ICollection<Media> Medias { get; set; }
     public ICollection<Comment> Comments { get; set; }
     public ICollection<Reaction> Reactions { get; set; }
+    public ICollection<User> Savers { get; set; }
 }

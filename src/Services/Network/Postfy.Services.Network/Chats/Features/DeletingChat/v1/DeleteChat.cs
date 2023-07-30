@@ -1,5 +1,6 @@
 using Ardalis.GuardClauses;
 using BuildingBlocks.Abstractions.CQRS.Commands;
+using BuildingBlocks.Security.Extensions;
 using BuildingBlocks.Security.Jwt;
 using Microsoft.EntityFrameworkCore;
 using Postfy.Services.Network.Posts;
@@ -14,12 +15,15 @@ public class DeleteChatHandler : ICommandHandler<DeleteChat>
     private readonly INetworkDbContext _context;
     private readonly ISecurityContextAccessor _securityContextAccessor;
 
+    public DeleteChatHandler(ISecurityContextAccessor securityContextAccessor, INetworkDbContext context)
+    {
+        _securityContextAccessor = securityContextAccessor;
+        _context = context;
+    }
+
     public async Task<Unit> Handle(DeleteChat request, CancellationToken cancellationToken)
     {
-        var userIdStr = _securityContextAccessor.UserId;
-        Guard.Against.NullOrEmpty(userIdStr, "You are not authenticated.");
-        var userId = Guid.Parse(userIdStr!);
-        Guard.Against.NullOrEmpty(userId, "User id can't be empty.");
+        var userId = _securityContextAccessor.GetIdAsGuid();
 
         var chat = await _context.Chats.FirstOrDefaultAsync(
                        x => x.Id == request.Id && x.Users.Any(u => u.Id == userId),
