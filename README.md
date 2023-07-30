@@ -1,20 +1,20 @@
 
 # Postfy
-Postfy is a social network similar to Instagram. 
+Postfy is a social network similar to Instagram.
 
 
 ## Features
 
-- [ ]  User Registration
-- [ ]  User Login
+- [x]  User Registration
+- [x]  User Login
 - [ ]  Profile Management
-- [ ]  Post Creation
-- [ ]  Edit/Delete Posts
-- [ ]  Like/Unlike Posts
-- [ ]  Commenting
-- [ ]  Messaging
+- [x]  Post Creation
+- [x]  Edit/Delete Posts
+- [x]  Like/Unlike Posts
+- [x]  Commenting
+- [x]  Messaging
 - [ ]  Explore/Search
-- [ ]  Follow/Unfollow
+- [x]  Follow/Unfollow
 - [ ]  Notifications
 - [ ]  Privacy Settings
 - [ ]  Save/Bookmark Posts
