@@ -1,6 +1,5 @@
 using BuildingBlocks.Abstractions.Persistence;
 using BuildingBlocks.Persistence.EfCore.Postgres;
-using BuildingBlocks.Persistence.Mongo;
 using Microsoft.EntityFrameworkCore;
 using Postfy.Services.Network.Shared.Contracts;
 using Postfy.Services.Network.Shared.Data;

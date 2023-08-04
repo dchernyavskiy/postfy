@@ -37,10 +37,5 @@ public static partial class WebApplicationExtensions
 
         if (app.Environment.IsTest() == false)
             app.UseCustomHealthCheck();
-
-        // Configure the prometheus endpoint for scraping metrics
-        // NOTE: This should only be exposed on an internal port!
-        // .RequireHost("*:9100");
-        app.MapPrometheusScrapingEndpoint();
     }
 }

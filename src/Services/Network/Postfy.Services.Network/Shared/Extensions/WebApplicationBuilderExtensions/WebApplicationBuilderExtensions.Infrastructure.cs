@@ -11,7 +11,6 @@ using BuildingBlocks.HealthCheck;
 using BuildingBlocks.Integration.MassTransit;
 using BuildingBlocks.Logging;
 using BuildingBlocks.Messaging.Persistence.Postgres.Extensions;
-using BuildingBlocks.OpenTelemetry;
 using BuildingBlocks.Persistence.EfCore.Postgres;
 using BuildingBlocks.Security.Extensions;
 using BuildingBlocks.Security.Jwt;
@@ -54,8 +53,6 @@ internal static partial class WebApplicationBuilderExtensions
         builder.AddCustomSwagger(typeof(NetworkAssemblyInfo).Assembly);
 
         builder.Services.AddHttpContextAccessor();
-
-        builder.AddCustomOpenTelemetry();
 
         if (builder.Environment.IsTest() == false)
         {
