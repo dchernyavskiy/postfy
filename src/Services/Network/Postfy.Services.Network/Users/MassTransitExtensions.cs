@@ -2,6 +2,7 @@ using Humanizer;
 using MassTransit;
 using Postfy.Services.Network.Shared.Extensions.StringExtensions;
 using Postfy.Services.Network.Users.Features.RegisteringUser.v1.Events.Integration.External;
+using Postfy.Services.Network.Users.Features.UpdatingUser.v1.Events.Integration.External;
 using Postfy.Services.Shared.Identity.Users.Events.v1.Integration;
 using RabbitMQ.Client;
 
@@ -25,6 +26,23 @@ internal static class MassTransitExtensions
                         e.ExchangeType = ExchangeType.Fanout;
                     });
                 re.ConfigureConsumer<UserRegisteredConsumer>(context);
+                re.RethrowFaultedMessages();
+            });
+
+        cfg.ReceiveEndpoint(
+            nameof(UserUpdatedV1).Underscore().Prefixify(),
+            re =>
+            {
+                re.ConfigureConsumeTopology = true;
+                re.SetQuorumQueue();
+                re.Bind(
+                    $"{nameof(UserUpdatedV1).Underscore()}.input_exchange",
+                    e =>
+                    {
+                        e.RoutingKey = nameof(UserUpdatedV1).Underscore();
+                        e.ExchangeType = ExchangeType.Fanout;
+                    });
+                re.ConfigureConsumer<UserUpdatedConsumer>(context);
                 re.RethrowFaultedMessages();
             });
     }

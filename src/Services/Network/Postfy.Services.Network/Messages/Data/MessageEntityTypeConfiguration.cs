@@ -31,7 +31,6 @@ public class MessageEntityTypeConfiguration : IEntityTypeConfiguration<Message>
             n =>
             {
                 n.ToTable(("message_" + nameof(Media)).Pluralize().Underscore(), NetworkDbContext.DefaultSchema);
-
                 n.Property(x => x.Id).ValueGeneratedNever();
                 n.HasKey(x => x.Id);
                 n.HasIndex(x => x.Id).IsUnique();

@@ -75,7 +75,7 @@ internal class SendEmailVerificationCodeCommandHandler : ICommandHandler<SendEma
         (string Email, string VerificationCode) model = (request.Email, verificationCode);
 
         string content =
-            $"Welcome to shop application! Please verify your email with using this Code: {model.VerificationCode}.";
+            $"Welcome to postfy application! Please verify your email with using this Code: {model.VerificationCode}.";
 
         string subject = "Verification Email";
 

@@ -21,14 +21,14 @@ public static class IdentityServerConfig
         };
 
     public static IEnumerable<ApiScope> ApiScopes =>
-        new List<ApiScope> { new("shop-api", "Postfy.Services.Catalogs Web API") };
+        new List<ApiScope> { new("postfy-api", "Postfy.Services.Catalogs Web API") };
 
     public static IList<ApiResource> ApiResources =>
         new List<ApiResource>
         {
-            new ApiResource("ShopApiResource", "Postfy.Services.Catalogs Web API Resource")
+            new ApiResource("PostfyApiResource", "Postfy.Services.Catalogs Web API Resource")
             {
-                Scopes = { "shop-api" },
+                Scopes = { "postfy-api" },
                 UserClaims = { JwtClaimTypes.Role, JwtClaimTypes.Name, JwtClaimTypes.Id }
             }
         };
@@ -48,7 +48,7 @@ public static class IdentityServerConfig
                     IdentityServerConstants.StandardScopes.Profile,
                     IdentityServerConstants.StandardScopes.Email,
                     "roles",
-                    "shop-api"
+                    "postfy-api"
                 }
             },
             new()
@@ -63,7 +63,7 @@ public static class IdentityServerConfig
                     IdentityServerConstants.StandardScopes.Profile,
                     IdentityServerConstants.StandardScopes.Email,
                     "roles",
-                    "shop-api"
+                    "postfy-api"
                 }
             }
         };
