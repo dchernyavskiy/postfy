@@ -14,7 +14,7 @@ public static partial class WebApplicationExtensions
             // https://stackoverflow.com/questions/38238043/how-and-where-to-call-database-ensurecreated-and-database-migrate
             // https://www.michalbialecki.com/2020/07/20/adding-entity-framework-core-5-migrations-to-net-5-project/
             using var serviceScope = app.Services.CreateScope();
-            var seeders = serviceScope.ServiceProvider.GetServices<IDataSeeder>();
+            var seeders = serviceScope.ServiceProvider.GetServices<IDataSeeder>().OrderBy(x => x.Order);
 
             foreach (var seeder in seeders)
             {

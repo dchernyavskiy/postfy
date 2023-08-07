@@ -11,7 +11,12 @@ using Postfy.Services.Network.Shared.Dtos;
 
 namespace Postfy.Services.Network.Posts.Features.UpdatingPost.v1;
 
-public record UpdatePost(Guid Id, string Caption, ICollection<MediaBriefDto> Medias) : IUpdateCommand, IMapWith<Post>;
+public record UpdatePost : IUpdateCommand, IMapWith<Post>
+{
+    public Guid Id { get; set; }
+    public string Caption { get; set; }
+    public ICollection<MediaBriefDto> Medias { get; set; }
+}
 
 public class UpdatePostHandler : ICommandHandler<UpdatePost>
 {

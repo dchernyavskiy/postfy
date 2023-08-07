@@ -90,7 +90,7 @@ app.MapModulesEndpoints();
 // automatic discover minimal endpoints
 app.MapMinimalEndpoints();
 
-if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("docker"))
+if (!app.Environment.IsProduction())
 {
     // swagger middleware should register last to discover all endpoints and its versions correctly
     app.UseCustomSwagger();

@@ -1,4 +1,6 @@
+using BuildingBlocks.Abstractions.Persistence;
 using BuildingBlocks.Abstractions.Web.Module;
+using Postfy.Services.Network.Reactions.Data;
 using Postfy.Services.Network.Shared;
 
 namespace Postfy.Services.Network.Reactions;
@@ -10,6 +12,7 @@ public class ReactionConfigs : IModuleConfiguration
 
     public WebApplicationBuilder AddModuleServices(WebApplicationBuilder builder)
     {
+        builder.Services.AddScoped<IDataSeeder, ReactionDataSeeder>();
         return builder;
     }
 

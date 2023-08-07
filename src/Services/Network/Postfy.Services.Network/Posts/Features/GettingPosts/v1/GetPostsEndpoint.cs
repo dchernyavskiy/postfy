@@ -16,7 +16,7 @@ public class GetPostsEndpoint : EndpointBaseAsync.WithRequest<GetPosts>.WithActi
     }
 
     [HttpGet(PostConfigs.PrefixUri, Name = "GetPosts")]
-    [ProducesResponseType(typeof(GetPostsResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(GetPostsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(StatusCodeProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(StatusCodeProblemDetails), StatusCodes.Status400BadRequest)]
     [SwaggerOperation(
@@ -29,7 +29,7 @@ public class GetPostsEndpoint : EndpointBaseAsync.WithRequest<GetPosts>.WithActi
                })]
     [ApiVersion(1.0)]
     public override async Task<ActionResult<GetPostsResponse>> HandleAsync(
-        [FromBody] GetPosts request,
+        [FromQuery] GetPosts request,
         CancellationToken cancellationToken = new CancellationToken()
     )
     {

@@ -21,9 +21,12 @@ public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
         builder.HasIndex(x => x.Id).IsUnique();
 
         builder.HasMany(x => x.Followers)
-            .WithOne(x => x)
-            .HasForeignKey(x => x.Id)
-            .OnDelete(DeleteBehavior.NoAction);
+            .WithMany(x => x.Followings)
+            .UsingEntity(
+                "follower_following",
+                l => l.HasOne(typeof(User)).WithMany().HasForeignKey("follower_id").HasPrincipalKey(nameof(User.Id)),
+                r => r.HasOne(typeof(User)).WithMany().HasForeignKey("following_id").HasPrincipalKey(nameof(User.Id)),
+                j => j.HasKey("follower_id", "following_id"));
 
         builder.HasMany(x => x.Reactions)
             .WithOne(x => x.User)
@@ -62,14 +65,17 @@ public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
             .OnDelete(DeleteBehavior.NoAction);
 
         builder.OwnsOne(
-            x => x.ProfileImage,
-            n =>
-            {
-                n.Property(x => x.Id).HasColumnName(nameof(Media.Id).Underscore());
-                n.Property(x => x.Url).HasColumnName(nameof(Media.Url).Underscore());
-                n.Property(x => x.Type).HasColumnName(nameof(Media.Type).Underscore());
-                n.Property(x => x.Position).HasColumnName(nameof(Media.Position).Underscore());
-            });
+            x => x.ProfileImage
+            // ,
+            //  n =>
+            //  {
+            //      n.Property(x => x.Id).HasColumnName(nameof(Media.Id).Underscore());
+            //      n.Property(x => x.Url).HasColumnName(nameof(Media.Url).Underscore());
+            //      n.Property(x => x.Url).HasColumnName(nameof(Media.Url).Underscore());
+            //      n.Property(x => x.Type).HasColumnName(nameof(Media.Type).Underscore());
+            //      n.Property(x => x.Position).HasColumnName(nameof(Media.Position).Underscore());
+            //  }
+        );
 
         builder.Property(x => x.FirstName).HasMaxLength(100);
         builder.Property(x => x.LastName).HasMaxLength(100);

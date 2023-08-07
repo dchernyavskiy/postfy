@@ -9,10 +9,10 @@ public class Media : ValueObject
         Id = Guid.NewGuid();
     }
 
-    public Guid Id { get; set; }
-    public string Url { get; set; }
-    public string Type { get; set; }
-    public int Position { get; set; }
+    public Guid? Id { get; set; }
+    public string? Url { get; set; }
+    public string? Type { get; set; }
+    public int? Position { get; set; }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {

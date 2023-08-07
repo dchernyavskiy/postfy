@@ -138,6 +138,7 @@ internal static partial class WebApplicationBuilderExtensions
             },
             autoConfigEndpoints: false);
 
+        builder.Services.AddScoped<ISecurityContextAccessor, SecurityContextAccessor>();
         builder.Services.AddCustomValidators(Assembly.GetExecutingAssembly());
         builder.AddCustomAutoMapper(Assembly.GetExecutingAssembly());
 

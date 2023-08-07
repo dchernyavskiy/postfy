@@ -1,4 +1,6 @@
+using BuildingBlocks.Abstractions.Persistence;
 using BuildingBlocks.Abstractions.Web.Module;
+using Postfy.Services.Network.Comments.Data;
 using Postfy.Services.Network.Shared;
 
 namespace Postfy.Services.Network.Comments;
@@ -10,6 +12,7 @@ public class CommentConfigs : IModuleConfiguration
 
     public WebApplicationBuilder AddModuleServices(WebApplicationBuilder builder)
     {
+        builder.Services.AddScoped<IDataSeeder, CommentDataSeeder>();
         return builder;
     }
 

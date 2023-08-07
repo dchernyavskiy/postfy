@@ -1,7 +1,7 @@
 ﻿{
   "$schema": "https://json.schemapostfy.org/launchsettings.json",
   "profiles": {
-    "Orders.Api.Https": {
+    "Network.Api.Https": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
@@ -12,7 +12,18 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Orders.Api.Http": {
+    "Network.Api.Https.Azure": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "hotReloadProfile": "aspnetcore",
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:9001;http://localhost:9000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Azure"
+      }
+    },
+    "Network.Api.Http": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
@@ -23,19 +34,19 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Orders.Api.Watch": {
+    "Network.Api.Watch": {
       "commandName": "Executable",
       "executablePath": "dotnet",
       "workingDirectory": "$(ProjectDir)",
       "hotReloadEnabled": true,
       "hotReloadProfile": "aspnetcore",
-      "commandLineArgs": "watch -lp Orders.Api.Http",
+      "commandLineArgs": "watch -lp Network.Api.Http",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Orders.Api.LiveRecompilation": {
+    "Network.Api.LiveRecompilation": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

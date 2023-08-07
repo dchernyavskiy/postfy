@@ -19,8 +19,9 @@ public class MessageEntityTypeConfiguration : IEntityTypeConfiguration<Message>
         builder.HasIndex(x => x.Id).IsUnique();
 
         builder.HasOne(x => x.Parent)
-            .WithOne(x => x)
-            .HasForeignKey<Message>(x => x.Id);
+            .WithMany(x => x.Children)
+            .HasForeignKey(x => x.ParentId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(x => x.Post)
             .WithOne(x => x.Message)

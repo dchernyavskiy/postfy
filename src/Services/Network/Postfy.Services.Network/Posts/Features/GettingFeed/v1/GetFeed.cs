@@ -30,13 +30,21 @@ public class GetFeedHandler : IQueryHandler<GetFeed, GetFeedResponse>
     public async Task<GetFeedResponse> Handle(GetFeed request, CancellationToken cancellationToken)
     {
         var userId = _securityContextAccessor.GetIdAsGuid();
-
-        var posts = await _context.Posts
-                        .Where(p => p.User.Followers.Any(f => f.Id == userId))
-                        .OrderBy(x => x.Created)
+        // var user = await _context.Users
+        // .Include(x => x.Followings)
+        // .ThenInclude(x => x.Posts)
+        // .Include(x => x.Followers)
+        // .ThenInclude(x => x.Posts)
+        // .ToListAsync(cancellationToken: cancellationToken);
+        var posts = await _context.Users
+                        .Where(x => x.Id == userId)
+                        .SelectMany(x => x.Followings.SelectMany(y => y.Posts))
+                        .Include(x => x.User)
+                        .Include(x => x.Reactions)
+                        .Include(x => x.Comments)
+                        .OrderByDescending(x => x.Created)
                         .ProjectTo<PostBriefDto>(_mapper.ConfigurationProvider)
                         .ApplyPagingAsync(request.Page, request.PageSize, cancellationToken);
-
 
         return new GetFeedResponse(posts);
     }

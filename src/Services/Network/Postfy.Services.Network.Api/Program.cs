@@ -10,7 +10,7 @@ using Postfy.Services.Network.Api.Extensions.ApplicationBuilderExtensions;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Spectre.Console;
 
-AnsiConsole.Write(new FigletText("Orders Service").Centered().Color(Color.FromInt32(new Faker().Random.Int(1, 255))));
+AnsiConsole.Write(new FigletText("Network Service").Centered().Color(Color.FromInt32(new Faker().Random.Int(1, 255))));
 
 // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis
 // https://benfoster.io/blog/mvc-to-minimal-apis-aspnet-6/
@@ -82,7 +82,7 @@ app.MapModulesEndpoints();
 // automatic discover minimal endpoints
 app.MapMinimalEndpoints();
 
-if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("docker"))
+if (!app.Environment.IsProduction())
 {
     // swagger middleware should register last to discover all endpoints and its versions correctly
     app.UseCustomSwagger();

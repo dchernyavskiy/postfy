@@ -35,6 +35,8 @@ public class GetPostsHandler : IQueryHandler<GetPosts, GetPostsResponse>
         var posts = await _context.Posts
                         .Include(x => x.Comments)
                         .Include(x => x.Reactions)
+                        .Include(x => x.User)
+                        .Where(x => x.UserId == userId)
                         .ProjectTo<PostBriefDto>(_mapper.ConfigurationProvider)
                         .ApplyPagingAsync(request.Page, request.PageSize, cancellationToken);
 

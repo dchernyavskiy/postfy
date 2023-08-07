@@ -16,7 +16,7 @@ public class GetFeedEndpoint : EndpointBaseAsync.WithRequest<GetFeed>.WithAction
     }
 
     [HttpGet(PostConfigs.PrefixUri + "/get-feed", Name = "GetFeed")]
-    [ProducesResponseType(typeof(GetFeedResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(GetFeedResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(StatusCodeProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(StatusCodeProblemDetails), StatusCodes.Status400BadRequest)]
     [SwaggerOperation(
@@ -29,7 +29,7 @@ public class GetFeedEndpoint : EndpointBaseAsync.WithRequest<GetFeed>.WithAction
                })]
     [ApiVersion(1.0)]
     public override async Task<ActionResult<GetFeedResponse>> HandleAsync(
-        [FromBody] GetFeed request,
+        [FromQuery] GetFeed request,
         CancellationToken cancellationToken = new CancellationToken()
     )
     {

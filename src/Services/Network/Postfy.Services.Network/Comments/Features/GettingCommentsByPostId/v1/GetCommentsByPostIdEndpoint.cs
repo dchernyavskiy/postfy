@@ -18,7 +18,7 @@ public class GetCommentsByPostIdEndpoint : EndpointBaseAsync.WithRequest<GetComm
     }
 
     [HttpGet(CommentConfigs.PrefixUri, Name = "GetCommentsByPostId")]
-    [ProducesResponseType(typeof(GetCommentsByPostIdResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(GetCommentsByPostIdResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(StatusCodeProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(StatusCodeProblemDetails), StatusCodes.Status400BadRequest)]
     [SwaggerOperation(
@@ -31,7 +31,7 @@ public class GetCommentsByPostIdEndpoint : EndpointBaseAsync.WithRequest<GetComm
                })]
     [ApiVersion(1.0)]
     public override async Task<ActionResult<GetCommentsByPostIdResponse>> HandleAsync(
-        [FromBody] GetCommentsByPostId request,
+        [FromQuery] GetCommentsByPostId request,
         CancellationToken cancellationToken = new CancellationToken()
     )
     {

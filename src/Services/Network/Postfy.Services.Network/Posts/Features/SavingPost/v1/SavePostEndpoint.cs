@@ -15,7 +15,7 @@ public class SavePostEndpoint : EndpointBaseAsync.WithRequest<SavePost>.WithActi
         _commandProcessor = commandProcessor;
     }
 
-    [HttpPut(PostConfigs.PrefixUri, Name = "SavePost")]
+    [HttpPut(PostConfigs.PrefixUri + "/save", Name = "SavePost")]
     [ProducesResponseType(typeof(SavePostResponse), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(StatusCodeProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(StatusCodeProblemDetails), StatusCodes.Status400BadRequest)]

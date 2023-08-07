@@ -1,3 +1,4 @@
+using System.Collections;
 using BuildingBlocks.Core.Domain;
 using Postfy.Services.Network.Chats.Models;
 using Postfy.Services.Network.Posts.Models;
@@ -24,6 +25,7 @@ public class Message : Aggregate<Guid>
 
     public Message? Parent { get; set; }
     public Guid? ParentId { get; set; }
+    public ICollection<Message> Children { get; set; }
 
     public Chat Chat { get; set; }
     public Guid ChatId { get; set; }

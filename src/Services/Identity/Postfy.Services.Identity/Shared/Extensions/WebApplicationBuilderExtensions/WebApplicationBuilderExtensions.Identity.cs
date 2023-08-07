@@ -17,7 +17,7 @@ public static partial class WebApplicationBuilderExtensions
         if (builder.Configuration.GetValue<bool>("PostgresOptions:UseInMemory"))
         {
             builder.Services.AddDbContext<IdentityContext>(
-                options => options.UseInMemoryDatabase("Postfy.Services.Identity")
+                options => options.UseInMemoryDatabase("Postfy.Services.Network2")
             );
 
             builder.Services.AddScoped<IDbFacadeResolver>(provider => provider.GetService<IdentityContext>()!);
@@ -28,7 +28,7 @@ public static partial class WebApplicationBuilderExtensions
             builder.Services.AddPostgresDbContext<IdentityContext>();
         }
 
-        // Problem with .net core identity - will override our default authentication scheme `JwtBearerDefaults.AuthenticationScheme` to unwanted `Postfy.Services.Identity.Application` in `AddIdentity()` method .net identity
+        // Problem with .net core identity - will override our default authentication scheme `JwtBearerDefaults.AuthenticationScheme` to unwanted `Postfy.Services.Network2.Application` in `AddIdentity()` method .net identity
         // https://github.com/IdentityServer/IdentityServer4/issues/1525
         // https://github.com/IdentityServer/IdentityServer4/issues/1525
         // some dependencies will add here if not registered before

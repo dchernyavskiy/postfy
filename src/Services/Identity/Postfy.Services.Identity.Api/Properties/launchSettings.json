@@ -1,5 +1,16 @@
 ﻿{
   "profiles": {
+    "Identity.Api.Https.Azure": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "hotReloadProfile": "aspnetcore",
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:7001;http://localhost:7000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Azure"
+      }
+    },
     "Identity.Api.Https": {
       "commandName": "Project",
       "dotnetRunMessages": true,
@@ -33,7 +44,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-	  "Identity.Api.LiveRecompilation": {
+    "Identity.Api.LiveRecompilation": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

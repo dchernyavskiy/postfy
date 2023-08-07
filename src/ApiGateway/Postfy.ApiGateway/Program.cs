@@ -1,5 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
+using BuildingBlocks.Core.Web.Extenions;
 using BuildingBlocks.Logging;
+using Postfy.ApiGateway.Options;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SpectreConsole;
@@ -43,6 +45,23 @@ builder.Services
                 });
         });
 
+const string corsName = "AllowFrontend";
+var cors = builder.Configuration.BindOptions<CorsOptions>(nameof(CorsOptions));
+
+builder.Services.AddCors(
+    (opts) =>
+    {
+        opts.AddPolicy(
+            corsName,
+            build =>
+            {
+                build.WithOrigins(cors.Uris.ToArray())
+                    .AllowCredentials()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+    });
+
 var app = builder.Build();
 
 // request logging just log in information level and above as default
@@ -52,6 +71,8 @@ app.UseSerilogRequestLogging(
         opts.EnrichDiagnosticContext = LogEnricher.EnrichFromRequest;
         opts.GetLevel = LogEnricher.GetLogLevel;
     });
+
+app.UseCors(corsName);
 
 app.MapGet(
     "/",
