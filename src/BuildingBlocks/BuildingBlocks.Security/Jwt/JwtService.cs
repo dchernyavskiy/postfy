@@ -41,22 +41,21 @@ public class JwtService : IJwtService
         // https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/blob/a301921ff5904b2fe084c38e41c969f4b2166bcb/src/System.IdentityModel.Tokens.Jwt/ClaimTypeMapping.cs#L45-L125
         // https://stackoverflow.com/a/50012477/581476
         var jwtClaims = new List<Claim>
-        {
-            new(JwtRegisteredClaimNames.NameId, userId),
-            new(JwtRegisteredClaimNames.Name, fullName ?? ""),
-            new(JwtRegisteredClaimNames.Sub, userId),
-            new(JwtRegisteredClaimNames.Sid, userId),
-            new(JwtRegisteredClaimNames.UniqueName, userName),
-            new(JwtRegisteredClaimNames.Email, email),
-            new(JwtRegisteredClaimNames.GivenName, fullName ?? ""),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new(
-                JwtRegisteredClaimNames.Iat,
-                DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture)
-            ),
-            new(CustomClaimTypes.RefreshToken, refreshToken ?? ""),
-            new(CustomClaimTypes.IpAddress, ipAddress),
-        };
+                        {
+                            new(JwtRegisteredClaimNames.NameId, userId),
+                            new(JwtRegisteredClaimNames.Name, fullName ?? ""),
+                            new(JwtRegisteredClaimNames.Sub, userId),
+                            new(JwtRegisteredClaimNames.Sid, userId),
+                            new(JwtRegisteredClaimNames.UniqueName, userName),
+                            new(JwtRegisteredClaimNames.Email, email),
+                            new(JwtRegisteredClaimNames.GivenName, fullName ?? ""),
+                            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                            new(
+                                JwtRegisteredClaimNames.Iat,
+                                DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture)),
+                            new(CustomClaimTypes.RefreshToken, refreshToken ?? ""),
+                            new(CustomClaimTypes.IpAddress, ipAddress),
+                        };
 
         if (rolesClaims?.Any() is true)
         {
@@ -72,13 +71,11 @@ public class JwtService : IJwtService
             foreach (var permissionsClaim in permissionsClaims)
             {
                 jwtClaims.Add(
-                    new Claim(CustomClaimTypes.Permission, permissionsClaim.ToLower(CultureInfo.InvariantCulture))
-                );
+                    new Claim(CustomClaimTypes.Permission, permissionsClaim.ToLower(CultureInfo.InvariantCulture)));
             }
         }
 
-        if (usersClaims?.Any() is true)
-            jwtClaims = jwtClaims.Union(usersClaims).ToList();
+        if (usersClaims?.Any() is true) jwtClaims = jwtClaims.Union(usersClaims).ToList();
 
         Guard.Against.NullOrEmpty(_jwtOptions.SecretKey, nameof(_jwtOptions.SecretKey));
 
@@ -92,8 +89,7 @@ public class JwtService : IJwtService
             notBefore: now,
             claims: jwtClaims,
             expires: expireTime,
-            signingCredentials: signingCredentials
-        );
+            signingCredentials: signingCredentials);
 
         var token = new JwtSecurityTokenHandler().WriteToken(jwt);
 
@@ -106,22 +102,26 @@ public class JwtService : IJwtService
         Guard.Against.NullOrEmpty(_jwtOptions.SecretKey, nameof(_jwtOptions.SecretKey));
 
         TokenValidationParameters tokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateAudience = true,
-            ValidateIssuer = true,
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SecretKey)),
-            ValidateLifetime = false,
-            ClockSkew = TimeSpan.Zero,
-        };
+                                                              {
+                                                                  ValidateAudience = true,
+                                                                  ValidAudience = _jwtOptions.Audience,
+                                                                  ValidateIssuer = true,
+                                                                  ValidIssuer = _jwtOptions.Issuer,
+                                                                  ValidateIssuerSigningKey = true,
+                                                                  IssuerSigningKey =
+                                                                      new SymmetricSecurityKey(
+                                                                          Encoding.UTF8.GetBytes(
+                                                                              _jwtOptions.SecretKey)),
+                                                                  ValidateLifetime = false,
+                                                                  ClockSkew = TimeSpan.Zero,
+                                                              };
 
         JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 
         ClaimsPrincipal principal = tokenHandler.ValidateToken(
             token,
             tokenValidationParameters,
-            out SecurityToken securityToken
-        );
+            out SecurityToken securityToken);
 
         JwtSecurityToken? jwtSecurityToken = securityToken as JwtSecurityToken;
 
