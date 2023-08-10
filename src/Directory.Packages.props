@@ -19,6 +19,7 @@
     <PackageVersion Include="AspNetCore.HealthChecks.Prometheus.Metrics" Version="6.0.2" />
     <PackageVersion Include="AspNetCore.HealthChecks.Publisher.Prometheus" Version="6.0.2" />
     <PackageVersion Include="AspNetCore.HealthChecks.System" Version="6.0.5" />
+    <PackageVersion Include="Azure.Storage.Files.Shares" Version="12.15.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.Google" Version="$(AspNetCoreVersion)" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(AspNetCoreVersion)" />
     <PackageVersion Include="Microsoft.AspNetCore.Http" Version="2.2.2" />

@@ -33,6 +33,10 @@ public class CreatePostEndpoint : EndpointBaseAsync.WithRequest<CreatePost>.With
         CancellationToken cancellationToken = new CancellationToken()
     )
     {
+        using (var reader = new StreamReader(Request.Body))
+        {
+            var str = await reader.ReadToEndAsync();
+        }
         return await _commandProcessor.SendAsync(request, cancellationToken);
     }
 }

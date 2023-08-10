@@ -46,4 +46,8 @@
     <Folder Include="Users\Exceptions\Domain\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Azure.Storage.Files.Shares" />
+  </ItemGroup>
+
 </Project>
