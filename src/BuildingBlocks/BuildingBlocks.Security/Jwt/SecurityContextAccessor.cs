@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Ardalis.GuardClauses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -19,7 +20,7 @@ public class SecurityContextAccessor : ISecurityContextAccessor
     {
         get
         {
-            var userId = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = _httpContextAccessor.HttpContext?.User?.FindFirst("nameid").Value;
             return userId;
         }
     }

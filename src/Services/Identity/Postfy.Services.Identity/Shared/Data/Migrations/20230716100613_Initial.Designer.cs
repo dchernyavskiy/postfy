@@ -25,7 +25,7 @@ namespace Postfy.Services.Identity.Shared.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Postfy.Services.Identity.Shared.Models.AccessToken", b =>
+            modelBuilder.Entity("Postfy.Services.Network2.Shared.Models.AccessToken", b =>
                 {
                     b.Property<Guid>("InternalCommandId")
                         .ValueGeneratedOnAdd()
@@ -67,7 +67,7 @@ namespace Postfy.Services.Identity.Shared.Data.Migrations
                     b.ToTable("access_tokens", (string)null);
                 });
 
-            modelBuilder.Entity("Postfy.Services.Identity.Shared.Models.ApplicationRole", b =>
+            modelBuilder.Entity("Postfy.Services.Network2.Shared.Models.ApplicationRole", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -99,7 +99,7 @@ namespace Postfy.Services.Identity.Shared.Data.Migrations
                     b.ToTable("asp_net_roles", (string)null);
                 });
 
-            modelBuilder.Entity("Postfy.Services.Identity.Shared.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Postfy.Services.Network2.Shared.Models.ApplicationUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -219,7 +219,7 @@ namespace Postfy.Services.Identity.Shared.Data.Migrations
                     b.ToTable("asp_net_users", (string)null);
                 });
 
-            modelBuilder.Entity("Postfy.Services.Identity.Shared.Models.ApplicationUserRole", b =>
+            modelBuilder.Entity("Postfy.Services.Network2.Shared.Models.ApplicationUserRole", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid")
@@ -238,7 +238,7 @@ namespace Postfy.Services.Identity.Shared.Data.Migrations
                     b.ToTable("asp_net_user_roles", (string)null);
                 });
 
-            modelBuilder.Entity("Postfy.Services.Identity.Shared.Models.EmailVerificationCode", b =>
+            modelBuilder.Entity("Postfy.Services.Network2.Shared.Models.EmailVerificationCode", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -272,7 +272,7 @@ namespace Postfy.Services.Identity.Shared.Data.Migrations
                     b.ToTable("email_verification_codes", (string)null);
                 });
 
-            modelBuilder.Entity("Postfy.Services.Identity.Shared.Models.PasswordResetCode", b =>
+            modelBuilder.Entity("Postfy.Services.Network2.Shared.Models.PasswordResetCode", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -306,7 +306,7 @@ namespace Postfy.Services.Identity.Shared.Data.Migrations
                     b.ToTable("password_reset_codes", (string)null);
                 });
 
-            modelBuilder.Entity("Postfy.Services.Identity.Shared.Models.RefreshToken", b =>
+            modelBuilder.Entity("Postfy.Services.Network2.Shared.Models.RefreshToken", b =>
                 {
                     b.Property<Guid>("InternalCommandId")
                         .ValueGeneratedOnAdd()
@@ -464,9 +464,9 @@ namespace Postfy.Services.Identity.Shared.Data.Migrations
                     b.ToTable("asp_net_user_tokens", (string)null);
                 });
 
-            modelBuilder.Entity("Postfy.Services.Identity.Shared.Models.AccessToken", b =>
+            modelBuilder.Entity("Postfy.Services.Network2.Shared.Models.AccessToken", b =>
                 {
-                    b.HasOne("Postfy.Services.Identity.Shared.Models.ApplicationUser", "ApplicationUser")
+                    b.HasOne("Postfy.Services.Network2.Shared.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("AccessTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -476,16 +476,16 @@ namespace Postfy.Services.Identity.Shared.Data.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
-            modelBuilder.Entity("Postfy.Services.Identity.Shared.Models.ApplicationUserRole", b =>
+            modelBuilder.Entity("Postfy.Services.Network2.Shared.Models.ApplicationUserRole", b =>
                 {
-                    b.HasOne("Postfy.Services.Identity.Shared.Models.ApplicationRole", "Role")
+                    b.HasOne("Postfy.Services.Network2.Shared.Models.ApplicationRole", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_asp_net_user_roles_asp_net_roles_role_id");
 
-                    b.HasOne("Postfy.Services.Identity.Shared.Models.ApplicationUser", "User")
+                    b.HasOne("Postfy.Services.Network2.Shared.Models.ApplicationUser", "User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -497,9 +497,9 @@ namespace Postfy.Services.Identity.Shared.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Postfy.Services.Identity.Shared.Models.RefreshToken", b =>
+            modelBuilder.Entity("Postfy.Services.Network2.Shared.Models.RefreshToken", b =>
                 {
-                    b.HasOne("Postfy.Services.Identity.Shared.Models.ApplicationUser", "ApplicationUser")
+                    b.HasOne("Postfy.Services.Network2.Shared.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("RefreshTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -511,7 +511,7 @@ namespace Postfy.Services.Identity.Shared.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Postfy.Services.Identity.Shared.Models.ApplicationRole", null)
+                    b.HasOne("Postfy.Services.Network2.Shared.Models.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -521,7 +521,7 @@ namespace Postfy.Services.Identity.Shared.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Postfy.Services.Identity.Shared.Models.ApplicationUser", null)
+                    b.HasOne("Postfy.Services.Network2.Shared.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -531,7 +531,7 @@ namespace Postfy.Services.Identity.Shared.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("Postfy.Services.Identity.Shared.Models.ApplicationUser", null)
+                    b.HasOne("Postfy.Services.Network2.Shared.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -541,7 +541,7 @@ namespace Postfy.Services.Identity.Shared.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("Postfy.Services.Identity.Shared.Models.ApplicationUser", null)
+                    b.HasOne("Postfy.Services.Network2.Shared.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -549,12 +549,12 @@ namespace Postfy.Services.Identity.Shared.Data.Migrations
                         .HasConstraintName("fk_asp_net_user_tokens_asp_net_users_user_id");
                 });
 
-            modelBuilder.Entity("Postfy.Services.Identity.Shared.Models.ApplicationRole", b =>
+            modelBuilder.Entity("Postfy.Services.Network2.Shared.Models.ApplicationRole", b =>
                 {
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("Postfy.Services.Identity.Shared.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Postfy.Services.Network2.Shared.Models.ApplicationUser", b =>
                 {
                     b.Navigation("AccessTokens");
 

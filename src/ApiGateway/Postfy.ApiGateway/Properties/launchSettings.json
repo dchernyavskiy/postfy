@@ -1,5 +1,5 @@
 ﻿{
-  "$schema": "https://json.schemaflora.org/launchsettings.json",
+  "$schema": "https://json.schemapostfy.org/launchsettings.json",
   "profiles": {
     "ApiGateway.Https": {
       "commandName": "Project",

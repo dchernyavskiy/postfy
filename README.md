@@ -17,4 +17,4 @@ Postfy is a social network similar to Instagram.
 - [x]  Follow/Unfollow
 - [ ]  Notifications
 - [ ]  Privacy Settings
-- [ ]  Save/Bookmark Posts
+- [x]  Save/Bookmark Posts

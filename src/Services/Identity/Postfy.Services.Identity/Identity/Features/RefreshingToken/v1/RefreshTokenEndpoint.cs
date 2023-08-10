@@ -10,7 +10,8 @@ public static class RefreshTokenEndpoint
     {
         return endpoints
             .MapPost("/refresh-token", RefreshToken)
-            .RequireAuthorization()
+            // .RequireAuthorization()
+            .AllowAnonymous()
             .Produces<RefreshTokenResponse>()
             .Produces<StatusCodeProblemDetails>(StatusCodes.Status404NotFound)
             .Produces<StatusCodeProblemDetails>(StatusCodes.Status400BadRequest)
