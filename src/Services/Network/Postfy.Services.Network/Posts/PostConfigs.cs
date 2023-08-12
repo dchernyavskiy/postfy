@@ -1,6 +1,9 @@
+using AutoMapper;
 using BuildingBlocks.Abstractions.Persistence;
 using BuildingBlocks.Abstractions.Web.Module;
 using Postfy.Services.Network.Posts.Data;
+using Postfy.Services.Network.Posts.Dtos;
+using Postfy.Services.Network.Posts.Models;
 using Postfy.Services.Network.Shared;
 
 namespace Postfy.Services.Network.Posts;

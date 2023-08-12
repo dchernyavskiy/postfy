@@ -4,11 +4,16 @@ using AutoMapper.QueryableExtensions;
 using BuildingBlocks.Abstractions.CQRS.Queries;
 using BuildingBlocks.Core.CQRS.Queries;
 using BuildingBlocks.Core.Persistence.EfCore;
+using BuildingBlocks.Core.Types.Extensions;
 using BuildingBlocks.Security.Extensions;
 using BuildingBlocks.Security.Jwt;
 using Microsoft.EntityFrameworkCore;
 using Postfy.Services.Network.Posts.Dtos;
+using Postfy.Services.Network.Posts.Models;
 using Postfy.Services.Network.Shared.Contracts;
+using Postfy.Services.Network.Shared.Dtos;
+using Postfy.Services.Network.Users.Dtos;
+using SQLitePCL;
 
 namespace Postfy.Services.Network.Posts.Features.GettingFeed.v1;
 
@@ -20,7 +25,11 @@ public class GetFeedHandler : IQueryHandler<GetFeed, GetFeedResponse>
     private readonly ISecurityContextAccessor _securityContextAccessor;
     private readonly IMapper _mapper;
 
-    public GetFeedHandler(INetworkDbContext context, ISecurityContextAccessor securityContextAccessor, IMapper mapper)
+    public GetFeedHandler(
+        INetworkDbContext context,
+        ISecurityContextAccessor securityContextAccessor,
+        IMapper mapper
+    )
     {
         _context = context;
         _securityContextAccessor = securityContextAccessor;
@@ -30,20 +39,33 @@ public class GetFeedHandler : IQueryHandler<GetFeed, GetFeedResponse>
     public async Task<GetFeedResponse> Handle(GetFeed request, CancellationToken cancellationToken)
     {
         var userId = _securityContextAccessor.GetIdAsGuid();
-        // var user = await _context.Users
-        // .Include(x => x.Followings)
-        // .ThenInclude(x => x.Posts)
-        // .Include(x => x.Followers)
-        // .ThenInclude(x => x.Posts)
-        // .ToListAsync(cancellationToken: cancellationToken);
         var posts = await _context.Users
                         .Where(x => x.Id == userId)
                         .SelectMany(x => x.Followings.SelectMany(y => y.Posts))
                         .Include(x => x.User)
                         .Include(x => x.Reactions)
                         .Include(x => x.Comments)
+                        .ThenInclude(x => x.User)
                         .OrderByDescending(x => x.Created)
-                        .ProjectTo<PostBriefDto>(_mapper.ConfigurationProvider)
+                        .AsNoTracking()
+                        .Select(
+                            x => new PostBriefDtoProxy()
+                                 {
+                                     Id = x.Id,
+                                     Caption = x.Caption,
+                                     UserId = x.UserId,
+                                     User = x.User,
+                                     Message = x.Message,
+                                     MessageId = x.MessageId,
+                                     Medias = x.Medias,
+                                     Comments = x.Comments,
+                                     Reactions = x.Reactions,
+                                     Savers = x.Savers,
+                                     CurrentUserId = userId
+                                 })
+                        .ProjectTo<PostBriefDto>(
+                            _mapper.ConfigurationProvider,
+                            new Dictionary<string, object>() {{"UserId", userId}})
                         .ApplyPagingAsync(request.Page, request.PageSize, cancellationToken);
 
         return new GetFeedResponse(posts);

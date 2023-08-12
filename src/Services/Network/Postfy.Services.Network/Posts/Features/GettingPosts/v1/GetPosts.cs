@@ -13,7 +13,7 @@ using Postfy.Services.Network.Shared.Contracts;
 
 namespace Postfy.Services.Network.Posts.Features.GettingPosts.v1;
 
-public record GetPosts() : ListQuery<GetPostsResponse>;
+public record GetPosts(Guid? UserId) : ListQuery<GetPostsResponse>;
 
 public class GetPostsHandler : IQueryHandler<GetPosts, GetPostsResponse>
 {
@@ -30,13 +30,14 @@ public class GetPostsHandler : IQueryHandler<GetPosts, GetPostsResponse>
 
     public async Task<GetPostsResponse> Handle(GetPosts request, CancellationToken cancellationToken)
     {
-        var userId = _securityContextAccessor.GetIdAsGuid();
+        var userId = request.UserId ?? _securityContextAccessor.GetIdAsGuid();
 
         var posts = await _context.Posts
                         .Include(x => x.Comments)
                         .Include(x => x.Reactions)
                         .Include(x => x.User)
                         .Where(x => x.UserId == userId)
+                        .AsNoTracking()
                         .ProjectTo<PostBriefDto>(_mapper.ConfigurationProvider)
                         .ApplyPagingAsync(request.Page, request.PageSize, cancellationToken);
 

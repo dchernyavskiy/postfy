@@ -109,7 +109,15 @@ internal static partial class WebApplicationBuilderExtensions
                     }
             );
             x.Map<ForbiddenException>(ex => new ForbiddenProblemDetails(ex.Message));
-            x.Map<UnAuthorizedException>(ex => new UnauthorizedProblemDetails(ex.Message));
+            // x.Map<UnAuthorizedException>(ex => new UnauthorizedProblemDetails(ex.Message));
+            x.Map<UnAuthorizedException>(
+                ex => new ProblemDetails()
+                      {
+                          Status = 401,
+                          Title = ex.GetType().Name,
+                          Detail = ex.Message,
+                          Type = "https://somedomain/identity-error"
+                      });
             x.Map<IdentityException>(ex =>
             {
                 var pd = new ProblemDetails
