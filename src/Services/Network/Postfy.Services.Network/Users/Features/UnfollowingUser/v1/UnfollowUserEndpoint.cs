@@ -5,32 +5,32 @@ using Hellang.Middleware.ProblemDetails;
 using Postfy.Services.Network.Posts;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Postfy.Services.Network.Users.Features.FollowingUser.v1;
+namespace Postfy.Services.Network.Users.Features.UnfollowingUser.v1;
 
-public class FollowUserEndpoint : EndpointBaseAsync.WithRequest<FollowUser>.WithoutResult
+public class UnfollowUserEndpoint : EndpointBaseAsync.WithRequest<UnfollowUser>.WithoutResult
 {
     private readonly ICommandProcessor _commandProcessor;
 
-    public FollowUserEndpoint(ICommandProcessor commandProcessor)
+    public UnfollowUserEndpoint(ICommandProcessor commandProcessor)
     {
         _commandProcessor = commandProcessor;
     }
 
-    [HttpPut(UserConfigs.PrefixUri+"/follow", Name = "FollowUser")]
+    [HttpPut(UserConfigs.PrefixUri + "unfollow", Name = "UnfollowUser")]
     [ProducesResponseType(typeof(StatusCodeResult), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(StatusCodeProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(StatusCodeProblemDetails), StatusCodes.Status400BadRequest)]
     [SwaggerOperation(
-        Summary = "FollowUser",
-        Description = "FollowUser",
-        OperationId = "FollowUser",
+        Summary = "UnfollowUser",
+        Description = "UnfollowUser",
+        OperationId = "UnfollowUser",
         Tags = new[]
                {
                    UserConfigs.Tag
                })]
     [ApiVersion(1.0)]
     public override async Task HandleAsync(
-        [FromBody] FollowUser request,
+        [FromBody] UnfollowUser request,
         CancellationToken cancellationToken = new CancellationToken()
     )
     {

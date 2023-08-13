@@ -23,7 +23,9 @@ public class SavePostHandler : ICommandHandler<SavePost, SavePostResponse>
     public async Task<SavePostResponse> Handle(SavePost request, CancellationToken cancellationToken)
     {
         var userId = _securityContextAccessor.GetIdAsGuid();
-        var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId, cancellationToken: cancellationToken);
+        var user = await _context.Users
+                       .Include(x => x.SavedPosts)
+                       .FirstOrDefaultAsync(x => x.Id == userId, cancellationToken: cancellationToken);
         Guard.Against.Null(user);
         var post = await _context.Posts.FirstOrDefaultAsync(
                        x => x.Id == request.PostId,

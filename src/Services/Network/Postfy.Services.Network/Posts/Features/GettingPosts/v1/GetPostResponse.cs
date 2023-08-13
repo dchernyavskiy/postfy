@@ -4,4 +4,4 @@ using Postfy.Services.Network.Posts.Models;
 
 namespace Postfy.Services.Network.Posts.Features.GettingPost.v1;
 
-public record GetPostResponse(PostBriefDto Body);
+public record GetPostResponse(PostDto Body);

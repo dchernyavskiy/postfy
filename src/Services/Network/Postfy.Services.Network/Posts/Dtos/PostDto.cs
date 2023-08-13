@@ -1,7 +1,5 @@
 using AutoMapper;
 using BuildingBlocks.Abstractions.Mapping;
-using BuildingBlocks.Security.Jwt;
-using MongoDB.Driver.Core.Authentication;
 using Postfy.Services.Network.Comments.Models;
 using Postfy.Services.Network.Posts.Models;
 using Postfy.Services.Network.Shared.Dtos;
@@ -9,7 +7,7 @@ using Postfy.Services.Network.Users.Dtos;
 
 namespace Postfy.Services.Network.Posts.Dtos;
 
-public record PostBriefDto : IMapWith<Post>, IMapWith<PostBriefDtoProxy>
+public record PostDto : IMapWith<Post>
 {
     public Guid Id { get; set; }
     public string Caption { get; set; }
@@ -23,12 +21,9 @@ public record PostBriefDto : IMapWith<Post>, IMapWith<PostBriefDtoProxy>
 
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<Post, PostBriefDto>()
+        profile.CreateMap<Post, PostDto>()
             .ForMember(x => x.LikeCount, opts => opts.MapFrom(src => src.Reactions.Count(x => x.IsLiked)))
             .ForMember(x => x.CommentCount, opts => opts.MapFrom(src => src.Comments.Count()))
-            .ForMember(
-                x => x.Comments,
-                opts => opts.MapFrom(src => src.Comments.Take(2)))
             .AfterMap(
                 (src, dest, ctx) =>
                 {
@@ -43,20 +38,6 @@ public record PostBriefDto : IMapWith<Post>, IMapWith<PostBriefDtoProxy>
                     {
                         // ignored
                     }
-                })
-            ;
-
-        profile.CreateMap<PostBriefDtoProxy, PostBriefDto>()
-            .ForMember(
-                x => x.IsLiked,
-                opts => opts.MapFrom(
-                    src =>
-                        src.Reactions.Any(x => x.UserId == src.CurrentUserId && x.IsLiked)))
-            .ForMember(x => x.LikeCount, opts => opts.MapFrom(src => src.Reactions.Count(x => x.IsLiked)))
-            .ForMember(x => x.CommentCount, opts => opts.MapFrom(src => src.Comments.Count()))
-            .ForMember(
-                x => x.Comments,
-                opts => opts.MapFrom(src => src.Comments.Take(2)))
-            ;
+                });
     }
 }

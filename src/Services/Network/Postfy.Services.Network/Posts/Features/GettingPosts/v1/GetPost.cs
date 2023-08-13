@@ -41,13 +41,13 @@ public class GetPostHandler : IQueryHandler<GetPost, GetPostResponse>
         try
         {
             var userId = Guid.Parse(_securityContextAccessor.UserId);
-            return new GetPostResponse(_mapper.Map<PostBriefDto>(post, opts => opts.Items.Add("UserId", userId)));
+            return new GetPostResponse(_mapper.Map<PostDto>(post, opts => opts.Items.Add("UserId", userId)));
         }
         catch
         {
             // ignored
         }
 
-        return new GetPostResponse(_mapper.Map<PostBriefDto>(post));
+        return new GetPostResponse(_mapper.Map<PostDto>(post));
     }
 }

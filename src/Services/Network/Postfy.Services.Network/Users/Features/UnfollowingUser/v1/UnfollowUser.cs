@@ -5,22 +5,22 @@ using BuildingBlocks.Security.Jwt;
 using Microsoft.EntityFrameworkCore;
 using Postfy.Services.Network.Shared.Contracts;
 
-namespace Postfy.Services.Network.Users.Features.FollowingUser.v1;
+namespace Postfy.Services.Network.Users.Features.UnfollowingUser.v1;
 
-public record FollowUser(Guid UserId) : ICreateCommand;
+public record UnfollowUser(Guid UserId) : ICreateCommand;
 
-public class FollowUserHandler : ICommandHandler<FollowUser>
+public class UnfollowUserHandler : ICommandHandler<UnfollowUser>
 {
     private readonly INetworkDbContext _context;
     private readonly ISecurityContextAccessor _securityContextAccessor;
 
-    public FollowUserHandler(INetworkDbContext context, ISecurityContextAccessor securityContextAccessor)
+    public UnfollowUserHandler(INetworkDbContext context, ISecurityContextAccessor securityContextAccessor)
     {
         _context = context;
         _securityContextAccessor = securityContextAccessor;
     }
 
-    public async Task<Unit> Handle(FollowUser request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(UnfollowUser request, CancellationToken cancellationToken)
     {
         var userId = _securityContextAccessor.GetIdAsGuid();
 
@@ -36,7 +36,7 @@ public class FollowUserHandler : ICommandHandler<FollowUser>
                            cancellationToken: cancellationToken);
         Guard.Against.Null(follower);
 
-        following.Followers.Add(follower);
+        following.Followers.Remove(follower);
         await _context.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;
