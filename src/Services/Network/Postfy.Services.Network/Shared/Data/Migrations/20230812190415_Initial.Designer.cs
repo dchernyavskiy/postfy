@@ -12,7 +12,7 @@ using Postfy.Services.Network.Shared.Data;
 namespace Postfy.Services.Network.Shared.Data.Migrations
 {
     [DbContext(typeof(NetworkDbContext))]
-    [Migration("20230805121825_Initial")]
+    [Migration("20230812190415_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

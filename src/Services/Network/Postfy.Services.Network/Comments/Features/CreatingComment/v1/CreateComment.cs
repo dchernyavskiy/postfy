@@ -7,7 +7,7 @@ using Postfy.Services.Network.Shared.Contracts;
 
 namespace Postfy.Services.Network.Comments.Features.CreatingComment.v1;
 
-public record CreateComment(string Text, Guid ParentId, Guid PostId) : ICreateCommand;
+public record CreateComment(string Text, Guid? ParentId, Guid PostId) : ICreateCommand;
 
 public class CreateCommentHandler : ICommandHandler<CreateComment>
 {

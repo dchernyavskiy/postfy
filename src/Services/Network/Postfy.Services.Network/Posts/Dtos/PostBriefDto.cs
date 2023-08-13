@@ -39,7 +39,6 @@ public record PostBriefDto : IMapWith<Post>, IMapWith<PostBriefDtoProxy>
     public ICollection<MediaBriefDto> Medias { get; set; }
     public UserDto User { get; set; }
     public bool IsLiked { get; set; }
-    public bool HasLike { get; set; }
     public int LikeCount { get; set; }
     public int CommentCount { get; set; }
     public DateTime Created { get; set; }
@@ -53,6 +52,21 @@ public record PostBriefDto : IMapWith<Post>, IMapWith<PostBriefDtoProxy>
             .ForMember(
                 x => x.Comments,
                 opts => opts.MapFrom(src => src.Comments.Take(2)))
+            .AfterMap(
+                (src, dest, ctx) =>
+                {
+                    try
+                    {
+                        if (ctx.Items.TryGetValue("UserId", out var userId))
+                        {
+                            dest.IsLiked = src.Reactions.Any(x => x.IsLiked && x.UserId == (Guid)userId);
+                        }
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                })
             ;
 
         profile.CreateMap<PostBriefDtoProxy, PostBriefDto>()
