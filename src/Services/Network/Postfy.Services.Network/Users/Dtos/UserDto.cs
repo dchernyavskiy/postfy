@@ -1,4 +1,7 @@
+using AutoMapper;
 using BuildingBlocks.Abstractions.Mapping;
+using Postfy.Services.Network.Posts.Dtos;
+using Postfy.Services.Network.Shared.Dtos;
 using Postfy.Services.Network.Shared.Models;
 using Postfy.Services.Network.Users.Models;
 
@@ -10,5 +13,18 @@ public class UserDto : IMapWith<User>
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string ProfileName { get; set; }
-    public Media? ProfileImage { get; set; }
+    public MediaBriefDto? ProfileImage { get; set; }
+
+
+    public int PostCount { get; set; }
+    public int FollowerCount { get; set; }
+    public int FollowingCount { get; set; }
+
+    public void Mapping(Profile profile)
+    {
+        profile.CreateMap<User, UserDto>()
+            .ForMember(x => x.PostCount, opts => opts.MapFrom(src => src.Posts.Count()))
+            .ForMember(x => x.FollowerCount, opts => opts.MapFrom(src => src.Followers.Count()))
+            .ForMember(x => x.FollowingCount, opts => opts.MapFrom(src => src.Followings.Count()));
+    }
 }

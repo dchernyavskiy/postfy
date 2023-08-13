@@ -12,7 +12,7 @@ public record PostDto : IMapWith<Post>
     public Guid Id { get; set; }
     public string Caption { get; set; }
     public ICollection<MediaBriefDto> Medias { get; set; }
-    public UserDto User { get; set; }
+    public UserBriefDto User { get; set; }
     public bool IsLiked { get; set; }
     public int LikeCount { get; set; }
     public int CommentCount { get; set; }

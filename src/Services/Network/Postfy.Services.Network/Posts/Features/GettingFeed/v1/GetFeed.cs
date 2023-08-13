@@ -63,9 +63,7 @@ public class GetFeedHandler : IQueryHandler<GetFeed, GetFeedResponse>
                                      Savers = x.Savers,
                                      CurrentUserId = userId
                                  })
-                        .ProjectTo<PostBriefDto>(
-                            _mapper.ConfigurationProvider,
-                            new Dictionary<string, object>() {{"UserId", userId}})
+                        .ProjectTo<PostBriefDto>(_mapper.ConfigurationProvider)
                         .ApplyPagingAsync(request.Page, request.PageSize, cancellationToken);
 
         return new GetFeedResponse(posts);
