@@ -24,6 +24,17 @@ public class FollowDataSeeder : IDataSeeder
         foreach (var user in users)
         {
             var userWithoutCurrent = users.Where(x => x.Id != user.Id).ToArray();
+            // foreach (var u in userWithoutCurrent)
+            // {
+            //     var sub = new Subscription() {FollowerId = user.Id, FollowingId = u.Id};
+            //     _context.Subscriptions.Add(sub);
+            // }
+            //
+            // foreach (var u in userWithoutCurrent)
+            // {
+            //     var sub = new Subscription() {FollowerId = u.Id, FollowingId = user.Id};
+            //     _context.Subscriptions.Add(sub);
+            // }
             user.Followings = faker.Random.ArrayElements(userWithoutCurrent, faker.Random.Int(3, 5)).ToList();
             user.Followers = faker.Random.ArrayElements(userWithoutCurrent, faker.Random.Int(3, 5)).ToList();
             _context.Users.Update(user);

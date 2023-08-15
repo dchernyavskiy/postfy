@@ -31,15 +31,24 @@ public class GetProfileHandler : IQueryHandler<GetProfile, GetProfileResponse>
 
     public async Task<GetProfileResponse> Handle(GetProfile request, CancellationToken cancellationToken)
     {
-        var userId = request.UserId == Guid.Empty ? _securityContextAccessor.GetIdAsGuid() : request.UserId;
+        var userId = _securityContextAccessor.GetIdAsGuid();
+        var profileId = request.UserId == Guid.Empty ? userId : request.UserId;
 
         var user = await _context.Users
+                       .Include(x => x.Followings)
+                       .Include(x => x.Followers)
                        .Include(x => x.Posts)
                        .FirstOrDefaultAsync(
-                           x => x.Id == userId,
+                           x => x.Id == profileId,
                            cancellationToken: cancellationToken);
 
 
-        return new GetProfileResponse(_mapper.Map<UserDto>(user));
+        return new GetProfileResponse(
+            _mapper.Map<UserDto>(
+                user,
+                opts =>
+                {
+                    opts.Items.Add("UserId", userId);
+                }));
     }
 }

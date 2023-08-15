@@ -30,7 +30,15 @@ public class User : Aggregate<Guid>
     public ICollection<Message> Messages { get; set; }
     public ICollection<Post> Posts { get; set; }
     public ICollection<Post> SavedPosts { get; set; }
+
     public ICollection<User> Followers { get; set; }
+
+    // public ICollection<User> Followers => Subscriptions.Select(x => x.Follower).ToList();
+    public ICollection<Subscription> FollowerSubscriptions { get; set; }
+
+    public ICollection<Subscription> FollowingSubscriptions { get; set; }
+
+    // public ICollection<User> Followings => Subscriptions.Select(x => x.Following).ToList();
     public ICollection<User> Followings { get; set; }
     public ICollection<Reaction> Reactions { get; set; }
     public ICollection<Comment> Comments { get; set; }

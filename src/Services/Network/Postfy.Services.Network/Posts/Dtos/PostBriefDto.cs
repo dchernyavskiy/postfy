@@ -3,6 +3,7 @@ using BuildingBlocks.Abstractions.Mapping;
 using BuildingBlocks.Security.Jwt;
 using MongoDB.Driver.Core.Authentication;
 using Postfy.Services.Network.Comments.Models;
+using Postfy.Services.Network.Posts.Features.GettingPosts.v1;
 using Postfy.Services.Network.Posts.Models;
 using Postfy.Services.Network.Shared.Dtos;
 using Postfy.Services.Network.Users.Dtos;
@@ -28,10 +29,9 @@ public record PostBriefDto : IMapWith<Post>, IMapWith<PostBriefDtoProxy>
             .ForMember(x => x.CommentCount, opts => opts.MapFrom(src => src.Comments.Count()))
             .ForMember(
                 x => x.Comments,
-                opts => opts.MapFrom(src => src.Comments.Take(2)))
-            ;
+                opts => opts.MapFrom(src => src.Comments.Take(2)));
 
-        profile.CreateMap<Post, PostBriefDtoProxy>();
+        profile.CreateMap<PostBriefDtoProxy, PostBriefDto>();
 
         profile.CreateMap<PostBriefDtoProxy, PostBriefDto>()
             .ForMember(

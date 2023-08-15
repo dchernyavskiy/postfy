@@ -14,7 +14,7 @@ public class UserDto : IMapWith<User>
     public string LastName { get; set; }
     public string ProfileName { get; set; }
     public MediaBriefDto? ProfileImage { get; set; }
-
+    public bool IsFollowed { get; set; }
 
     public int PostCount { get; set; }
     public int FollowerCount { get; set; }
@@ -25,6 +25,10 @@ public class UserDto : IMapWith<User>
         profile.CreateMap<User, UserDto>()
             .ForMember(x => x.PostCount, opts => opts.MapFrom(src => src.Posts.Count()))
             .ForMember(x => x.FollowerCount, opts => opts.MapFrom(src => src.Followers.Count()))
-            .ForMember(x => x.FollowingCount, opts => opts.MapFrom(src => src.Followings.Count()));
+            .ForMember(x => x.FollowingCount, opts => opts.MapFrom(src => src.Followings.Count()))
+            .ForMember(
+                x => x.IsFollowed,
+                opts => opts.MapFrom(
+                    (src, dest, isDest, ctx) => src.Followers.Any(x => x.Id == (Guid)ctx.Items["UserId"])));
     }
 }

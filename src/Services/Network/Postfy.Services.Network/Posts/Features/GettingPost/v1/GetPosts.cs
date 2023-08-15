@@ -1,7 +1,5 @@
-using Ardalis.GuardClauses;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using BuildingBlocks.Abstractions.CQRS.Commands;
 using BuildingBlocks.Abstractions.CQRS.Queries;
 using BuildingBlocks.Core.CQRS.Queries;
 using BuildingBlocks.Core.Persistence.EfCore;
@@ -31,16 +29,14 @@ public class GetPostsHandler : IQueryHandler<GetPosts, GetPostsResponse>
     public async Task<GetPostsResponse> Handle(GetPosts request, CancellationToken cancellationToken)
     {
         var userId = request.UserId ?? _securityContextAccessor.GetIdAsGuid();
-
         var posts = await _context.Posts
+                        .AsNoTracking()
                         .Include(x => x.Comments)
                         .Include(x => x.Reactions)
                         .Include(x => x.User)
                         .Where(x => x.UserId == userId)
-                        .AsNoTracking()
                         .ProjectTo<PostBriefDto>(_mapper.ConfigurationProvider)
                         .ApplyPagingAsync(request.Page, request.PageSize, cancellationToken);
-
 
         return new GetPostsResponse(posts);
     }

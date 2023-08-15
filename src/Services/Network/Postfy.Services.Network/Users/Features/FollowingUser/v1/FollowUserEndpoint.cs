@@ -16,7 +16,7 @@ public class FollowUserEndpoint : EndpointBaseAsync.WithRequest<FollowUser>.With
         _commandProcessor = commandProcessor;
     }
 
-    [HttpPut(UserConfigs.PrefixUri+"/follow", Name = "FollowUser")]
+    [HttpPut(UserConfigs.PrefixUri + "/follow", Name = "FollowUser")]
     [ProducesResponseType(typeof(StatusCodeResult), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(StatusCodeProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(StatusCodeProblemDetails), StatusCodes.Status400BadRequest)]
