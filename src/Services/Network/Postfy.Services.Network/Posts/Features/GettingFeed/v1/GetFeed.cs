@@ -12,7 +12,9 @@ using Postfy.Services.Network.Posts.Dtos;
 using Postfy.Services.Network.Posts.Models;
 using Postfy.Services.Network.Shared.Contracts;
 using Postfy.Services.Network.Shared.Dtos;
+using Postfy.Services.Network.Shared.Models;
 using Postfy.Services.Network.Users.Dtos;
+using Postfy.Services.Network.Users.Models;
 using SQLitePCL;
 
 namespace Postfy.Services.Network.Posts.Features.GettingFeed.v1;
@@ -48,22 +50,29 @@ public class GetFeedHandler : IQueryHandler<GetFeed, GetFeedResponse>
                         .ThenInclude(x => x.User)
                         .OrderByDescending(x => x.Created)
                         .AsNoTracking()
-                        .Select(
-                            x => new PostBriefDtoProxy()
-                                 {
-                                     Id = x.Id,
-                                     Caption = x.Caption,
-                                     UserId = x.UserId,
-                                     User = x.User,
-                                     Message = x.Message,
-                                     MessageId = x.MessageId,
-                                     Medias = x.Medias,
-                                     Comments = x.Comments,
-                                     Reactions = x.Reactions,
-                                     Savers = x.Savers,
-                                     CurrentUserId = userId
-                                 })
-                        .ProjectTo<PostBriefDto>(_mapper.ConfigurationProvider)
+                        .ProjectTo<PostBriefDto>(
+                            new MapperConfiguration(
+                                cfg =>
+                                {
+                                    cfg.CreateMap<User, UserBriefDto>();
+                                    cfg.CreateMap<Media, MediaBriefDto>();
+                                    cfg.CreateMap<Post, PostBriefDto>()
+                                        .ForMember(
+                                            x => x.LikeCount,
+                                            opts => opts.MapFrom(src => src.Reactions.Count(x => x.IsLiked)))
+                                        .ForMember(
+                                            x => x.CommentCount,
+                                            opts => opts.MapFrom(src => src.Comments.Count()))
+                                        .ForMember(
+                                            x => x.Comments,
+                                            opts => opts.MapFrom(src => src.Comments.Take(2)))
+                                        .ForMember(
+                                            x => x.IsLiked,
+                                            opts => opts.MapFrom(
+                                                (src) =>
+                                                    src.Reactions.Any(x => x.UserId == userId && x.IsLiked)))
+                                        ;
+                                }))
                         .ApplyPagingAsync(request.Page, request.PageSize, cancellationToken);
 
         return new GetFeedResponse(posts);

@@ -2,6 +2,7 @@ using AutoMapper;
 using BuildingBlocks.Abstractions.Mapping;
 using BuildingBlocks.Security.Jwt;
 using MongoDB.Driver.Core.Authentication;
+using Newtonsoft.Json;
 using Postfy.Services.Network.Comments.Models;
 using Postfy.Services.Network.Posts.Features.GettingPosts.v1;
 using Postfy.Services.Network.Posts.Models;
@@ -12,6 +13,18 @@ namespace Postfy.Services.Network.Posts.Dtos;
 
 public record PostBriefDto : IMapWith<Post>, IMapWith<PostBriefDtoProxy>
 {
+    public Guid CurrentUserId { get; }
+
+    public PostBriefDto()
+    {
+    }
+
+    public PostBriefDto(Guid currentUserId)
+    {
+        CurrentUserId = currentUserId;
+    }
+
+
     public Guid Id { get; set; }
     public string Caption { get; set; }
     public ICollection<MediaBriefDto> Medias { get; set; }
@@ -24,12 +37,22 @@ public record PostBriefDto : IMapWith<Post>, IMapWith<PostBriefDtoProxy>
 
     public void Mapping(Profile profile)
     {
+        var currentUserId = Guid.Empty;
+
         profile.CreateMap<Post, PostBriefDto>()
+            .ConstructUsing(src => new PostBriefDto(currentUserId))
             .ForMember(x => x.LikeCount, opts => opts.MapFrom(src => src.Reactions.Count(x => x.IsLiked)))
             .ForMember(x => x.CommentCount, opts => opts.MapFrom(src => src.Comments.Count()))
             .ForMember(
                 x => x.Comments,
-                opts => opts.MapFrom(src => src.Comments.Take(2)));
+                opts => opts.MapFrom(src => src.Comments.Take(2)))
+            .ForMember(
+                x => x.IsLiked,
+                opts => opts.MapFrom(
+                    (src, dest) =>
+                        src.Reactions.Any(x => x.UserId == dest.CurrentUserId && x.IsLiked)))
+            ;
+
 
         profile.CreateMap<PostBriefDtoProxy, PostBriefDto>();
 

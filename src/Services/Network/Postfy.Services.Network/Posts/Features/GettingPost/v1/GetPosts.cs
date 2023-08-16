@@ -35,7 +35,7 @@ public class GetPostsHandler : IQueryHandler<GetPosts, GetPostsResponse>
                         .Include(x => x.Reactions)
                         .Include(x => x.User)
                         .Where(x => x.UserId == userId)
-                        .ProjectTo<PostBriefDto>(_mapper.ConfigurationProvider)
+                        .ProjectTo<PostBriefDto>(_mapper.ConfigurationProvider, new {currentUserId = userId})
                         .ApplyPagingAsync(request.Page, request.PageSize, cancellationToken);
 
         return new GetPostsResponse(posts);
