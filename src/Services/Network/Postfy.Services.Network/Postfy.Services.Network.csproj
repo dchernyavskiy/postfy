@@ -54,6 +54,7 @@
 
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Files.Shares" />
+    <PackageReference Include="Riok.Mapperly" />
   </ItemGroup>
 
 </Project>

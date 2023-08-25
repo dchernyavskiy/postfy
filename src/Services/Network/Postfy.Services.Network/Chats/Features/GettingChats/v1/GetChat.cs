@@ -5,6 +5,7 @@ using BuildingBlocks.Abstractions.CQRS.Commands;
 using BuildingBlocks.Abstractions.CQRS.Queries;
 using BuildingBlocks.Security.Extensions;
 using BuildingBlocks.Security.Jwt;
+using Microsoft.CodeAnalysis.FlowAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Postfy.Services.Network.Chats.Dtos;
 using Postfy.Services.Network.Chats.Models;
@@ -37,6 +38,11 @@ public class GetChatsHandler : IQueryHandler<GetChats, GetChatsResponse>
         var chats = await _context.Chats
                        .Where(x => x.Users.Any(u => u.Id == userId))
                        .ProjectTo<ChatBriefDto>(_mapper.ConfigurationProvider)
+                       .ProjectTo<ChatBriefDto>(new MapperConfiguration(
+                           cft =>
+                           {
+
+                           }))
                        .ToListAsync(cancellationToken: cancellationToken);
 
         return new GetChatsResponse(chats);

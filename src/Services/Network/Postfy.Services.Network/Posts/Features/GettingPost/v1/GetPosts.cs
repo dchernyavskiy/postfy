@@ -1,13 +1,19 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using BuildingBlocks.Abstractions.CQRS.Queries;
+using BuildingBlocks.Abstractions.Mapping;
 using BuildingBlocks.Core.CQRS.Queries;
 using BuildingBlocks.Core.Persistence.EfCore;
 using BuildingBlocks.Security.Extensions;
 using BuildingBlocks.Security.Jwt;
 using Microsoft.EntityFrameworkCore;
 using Postfy.Services.Network.Posts.Dtos;
+using Postfy.Services.Network.Posts.Models;
 using Postfy.Services.Network.Shared.Contracts;
+using Postfy.Services.Network.Shared.Dtos;
+using Postfy.Services.Network.Shared.Models;
+using Postfy.Services.Network.Users.Dtos;
+using Postfy.Services.Network.Users.Models;
 
 namespace Postfy.Services.Network.Posts.Features.GettingPosts.v1;
 
@@ -35,7 +41,29 @@ public class GetPostsHandler : IQueryHandler<GetPosts, GetPostsResponse>
                         .Include(x => x.Reactions)
                         .Include(x => x.User)
                         .Where(x => x.UserId == userId)
-                        .ProjectTo<PostBriefDto>(_mapper.ConfigurationProvider, new {currentUserId = userId})
+                        .ProjectTo<PostBriefDto>(
+                            new MapperConfiguration(
+                                cfg =>
+                                {
+                                    cfg.CreateMap<User, UserBriefDto>();
+                                    cfg.CreateMap<Media, MediaBriefDto>();
+                                    cfg.CreateMap<Post, PostBriefDto>()
+                                        .ForMember(
+                                            x => x.LikeCount,
+                                            opts => opts.MapFrom(src => src.Reactions.Count(x => x.IsLiked)))
+                                        .ForMember(
+                                            x => x.CommentCount,
+                                            opts => opts.MapFrom(src => src.Comments.Count()))
+                                        .ForMember(
+                                            x => x.Comments,
+                                            opts => opts.MapFrom(src => src.Comments.Take(2)))
+                                        .ForMember(
+                                            x => x.IsLiked,
+                                            opts => opts.MapFrom(
+                                                (src) =>
+                                                    src.Reactions.Any(x => x.UserId == userId && x.IsLiked)))
+                                        ;
+                                }))
                         .ApplyPagingAsync(request.Page, request.PageSize, cancellationToken);
 
         return new GetPostsResponse(posts);

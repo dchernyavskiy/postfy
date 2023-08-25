@@ -2,6 +2,7 @@ using BuildingBlocks.Abstractions.Mapping;
 using Postfy.Services.Network.Messages.Models;
 using Postfy.Services.Network.Posts.Dtos;
 using Postfy.Services.Network.Users.Dtos;
+using Riok.Mapperly.Abstractions;
 
 namespace Postfy.Services.Network.Messages.Dtos;
 

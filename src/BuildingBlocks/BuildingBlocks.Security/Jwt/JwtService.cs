@@ -37,9 +37,6 @@ public class JwtService : IJwtService
         var now = DateTime.Now;
         var ipAddress = IpUtilities.GetIpAddress();
 
-        // https://leastprivilege.com/2017/11/15/missing-claims-in-the-asp-net-core-2-openid-connect-handler/
-        // https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/blob/a301921ff5904b2fe084c38e41c969f4b2166bcb/src/System.IdentityModel.Tokens.Jwt/ClaimTypeMapping.cs#L45-L125
-        // https://stackoverflow.com/a/50012477/581476
         var jwtClaims = new List<Claim>
                         {
                             new(JwtRegisteredClaimNames.NameId, userId),
