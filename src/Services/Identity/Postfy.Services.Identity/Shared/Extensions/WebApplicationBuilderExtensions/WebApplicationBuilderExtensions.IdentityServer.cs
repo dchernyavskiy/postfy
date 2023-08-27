@@ -2,7 +2,7 @@ using Postfy.Services.Identity.Identity;
 using Postfy.Services.Identity.Identity.Services;
 using Postfy.Services.Identity.Shared.Models;
 
-// Ref:https://www.scottbrady91.com/identity-server/getting-started-with-identityserver-4
+
 namespace Postfy.Services.Identity.Shared.Extensions.WebApplicationBuilderExtensions;
 
 public static partial class WebApplicationBuilderExtensions

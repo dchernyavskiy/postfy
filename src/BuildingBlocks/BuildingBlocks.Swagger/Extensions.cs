@@ -13,8 +13,8 @@ namespace BuildingBlocks.Swagger;
 
 public static class Extensions
 {
-    // https://github.com/domaindrivendev/Swashbuckle.AspNetCore/blob/master/README.md
-    // https://github.com/dotnet/aspnet-api-versioning/tree/88323136a97a59fcee24517a514c1a445530c7e2/examples/AspNetCore/WebApi/MinimalOpenApiExample
+
+
     public static WebApplicationBuilder AddCustomSwagger(
         this WebApplicationBuilder builder,
         params Assembly[] assemblies
@@ -34,7 +34,7 @@ public static class Extensions
                                      Assembly.GetExecutingAssembly()
                                  };
 
-        // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/openapi
+
         services.AddEndpointsApiExplorer();
 
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
@@ -43,10 +43,10 @@ public static class Extensions
         services.AddSwaggerGen(
             options =>
             {
-                // // https://github.com/domaindrivendev/Swashbuckle.AspNetCore/issues/1269#issuecomment-577182931
+                //
                 // options.SchemaFilter<EnumSchemaFilter>();
 
-                // https://github.com/unchase/Unchase.Swashbuckle.AspNetCore.Extensions#fix-enums
+
                 options.AddEnumsWithValuesFixFilters();
 
                 options.OperationFilter<SwaggerDefaultValues>();
@@ -58,9 +58,9 @@ public static class Extensions
                     if (File.Exists(xmlFile)) options.IncludeXmlComments(xmlFile);
                 }
 
-                // https://github.com/domaindrivendev/Swashbuckle.AspNetCore#add-security-definitions-and-requirements
-                // https://swagger.io/docs/specification/authentication/
-                // https://medium.com/@niteshsinghal85/assign-specific-authorization-scheme-to-endpoint-in-swagger-ui-in-net-core-cd84d2a2ebd7
+
+
+
                 var bearerScheme = new OpenApiSecurityScheme()
                                    {
                                        Type = SecuritySchemeType.Http,

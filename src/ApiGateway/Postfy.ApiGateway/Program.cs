@@ -20,10 +20,10 @@ builder.Host.UseSerilog();
 
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-// https://docs.duendesoftware.com/identityserver/v5/bff/apis/remote/
-// https://microsoft.github.io/reverse-proxy/articles/index.html
-// https://microsoft.github.io/reverse-proxy/articles/authn-authz.html
-// https://microsoft.github.io/reverse-proxy/articles/transforms.html
+
+
+
+
 builder.Services
     .AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("yarp"))
@@ -31,7 +31,7 @@ builder.Services
     .AddTransforms(
         transforms =>
         {
-            // https://microsoft.github.io/reverse-proxy/articles/transforms.html
+
             transforms.AddRequestTransform(
                 transform =>
                 {

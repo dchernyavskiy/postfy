@@ -43,21 +43,21 @@ public static class Extensions
         {
             configureBusRegistration?.Invoke(busRegistrationConfigurator);
 
-            // https://masstransit-project.com/usage/configuration.html#receive-endpoints
+
             busRegistrationConfigurator.AddConsumers(assemblies);
 
             // exclude namespace for the messages
             busRegistrationConfigurator.SetEndpointNameFormatter(new SnakeCaseEndpointNameFormatter(false));
 
             // Ref: https://masstransit-project.com/advanced/topology/rabbitmq.html
-            // https://masstransit-project.com/understand/publishing.html
-            // https://spring.io/blog/2011/04/01/routing-topologies-for-performance-and-scalability-with-rabbitmq/
-            // https://jstobigdata.com/rabbitmq/exchange-to-exchange-binding-in-rabbitmq/
-            // https://masstransit-project.com/understand/under-the-hood.html
-            // https://masstransit-project.com/usage/producers.html
-            // https://masstransit-project.com/usage/consumers.html
-            // https://masstransit-project.com/usage/messages.html
-            // https://wrapt.dev/blog/building-an-event-driven-dotnet-application-setting-up-masstransit-and-rabbitmq
+
+
+
+
+
+
+
+
             busRegistrationConfigurator.UsingRabbitMq(
                 (context, cfg) =>
                 {
@@ -65,7 +65,7 @@ public static class Extensions
 
                     if (autoConfigEndpoints)
                     {
-                        // https://masstransit-project.com/usage/consumers.html#consumer
+
                         cfg.ConfigureEndpoints(context);
                     }
 
@@ -82,13 +82,13 @@ public static class Extensions
                         }
                     );
 
-                    // https://masstransit-project.com/usage/exceptions.html#retry
-                    // https://markgossa.com/2022/06/masstransit-exponential-back-off.html
+
+
                     cfg.UseMessageRetry(r => AddRetryConfiguration(r));
 
                     // cfg.UseInMemoryOutbox();
 
-                    // https: // github.com/MassTransit/MassTransit/issues/2018
+
                     cfg.Publish<IIntegrationEvent>(p => p.Exclude = true);
                     cfg.Publish<IntegrationEvent>(p => p.Exclude = true);
                     cfg.Publish<IMessage>(p => p.Exclude = true);

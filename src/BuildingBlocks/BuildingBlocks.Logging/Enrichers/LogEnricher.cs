@@ -5,9 +5,6 @@ using Serilog.Events;
 
 namespace BuildingBlocks.Logging;
 
-// Ref: https://andrewlock.net/using-serilog-aspnetcore-in-asp-net-core-3-logging-the-selected-endpoint-name-with-serilog/
-// https://andrewlock.net/using-serilog-aspnetcore-in-asp-net-core-3-excluding-health-check-endpoints-from-serilog-request-logging/
-// https://github.com/serilog/serilog-aspnetcore/issues/163
 public static class LogEnricher
 {
     /// <summary>

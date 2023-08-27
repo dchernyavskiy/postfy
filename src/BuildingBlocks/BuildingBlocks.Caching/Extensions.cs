@@ -17,7 +17,7 @@ public static class Extensions
         params Assembly[] scanAssemblies
     )
     {
-        // https://www.twilio.com/blog/provide-default-configuration-to-dotnet-applications
+
         var cacheOptions = builder.Configuration.BindOptions<CacheOptions>();
         Guard.Against.Null(cacheOptions);
 

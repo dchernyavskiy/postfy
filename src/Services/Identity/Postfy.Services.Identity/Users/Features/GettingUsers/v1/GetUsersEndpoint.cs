@@ -7,8 +7,8 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Postfy.Services.Identity.Users.Features.GettingUsers.v1;
 
-// https://www.youtube.com/watch?v=SDu0MA6TmuM
-// https://github.com/ardalis/ApiEndpoints
+
+
 public class GetUsersEndpoint : EndpointBaseAsync.WithRequest<GetUsersRequest?>.WithActionResult<GetUsersResponse>
 {
     private readonly IQueryProcessor _queryProcessor;

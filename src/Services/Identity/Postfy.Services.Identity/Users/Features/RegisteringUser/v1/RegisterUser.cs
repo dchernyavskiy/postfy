@@ -77,8 +77,8 @@ internal class RegisterUserValidator : AbstractValidator<RegisterUser>
     }
 }
 
-// using transaction script instead of using domain business logic here
-// https://www.youtube.com/watch?v=PrJIMTZsbDw
+
+
 internal class RegisterUserHandler : ICommandHandler<RegisterUser, RegisterUserResponse>
 {
     private readonly IMessagePersistenceService _messagePersistenceService;

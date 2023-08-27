@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace BuildingBlocks.Core.Persistence.EfCore.Interceptors;
 
-// https://khalidabuhakmeh.com/entity-framework-core-5-interceptors
-// https://learn.microsoft.com/en-us/ef/core/logging-events-diagnostics/interceptors#savechanges-interception
+
+
 public class ConcurrencyInterceptor : SaveChangesInterceptor
 {
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(

@@ -19,7 +19,7 @@ public static class ConfigurationExtensions
     {
         // note: with using Get<>() if there is no configuration in appsettings it just returns default value (null) for the configuration type
         // but if we use Bind() we can pass a instantiated type with its default value (for example in its property initialization) to bind method for binding configurations from appsettings
-        // https://www.twilio.com/blog/provide-default-configuration-to-dotnet-applications
+
         var options = new TOptions();
 
         var optionsSection = configuration.GetSection(section);

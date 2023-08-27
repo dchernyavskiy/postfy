@@ -6,7 +6,7 @@ using SqlKata.Compilers;
 
 namespace BuildingBlocks.Persistence.EfCore.Postgres;
 
-// Ref: https://github.com/sqlkata/querybuilder
+s://github.com/sqlkata/querybuilder
 // Ref: https://github.com/fulviocanducci/Canducci.SqlKata.Dapper
 public static class SqlKataExtensions
 {

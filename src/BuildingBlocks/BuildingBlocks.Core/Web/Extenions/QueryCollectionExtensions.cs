@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace BuildingBlocks.Core.Web.Extenions;
 
-// https://khalidabuhakmeh.com/read-and-convert-querycollection-values-in-aspnet
+
 public static class QueryCollectionExtensions
 {
     public static IEnumerable<T> All<T>(this IQueryCollection collection, string key)

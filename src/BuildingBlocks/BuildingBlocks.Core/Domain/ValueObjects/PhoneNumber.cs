@@ -5,7 +5,7 @@ using BuildingBlocks.Core.Exception;
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 namespace BuildingBlocks.Core.Domain.ValueObjects;
 
-// https://learn.microsoft.com/en-us/ef/core/modeling/constructors
+
 public record PhoneNumber
 {
     // EF

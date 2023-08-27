@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BuildingBlocks.Core.Persistence.EfCore.Converters;
 
-// https://stackoverflow.com/questions/708952/how-to-instantiate-an-object-with-a-private-constructor-in-c
+
 public class EntityIdValurConverter<TEntityId, TId> : ValueConverter<TEntityId, TId>
     where TEntityId : EntityId<TId>
 {

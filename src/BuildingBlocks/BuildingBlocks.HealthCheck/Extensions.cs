@@ -12,11 +12,11 @@ using Prometheus;
 
 namespace BuildingBlocks.HealthCheck;
 
-// https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks
-// https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks
-// https://nikiforovall.github.io/dotnet/aspnetcore/coding-stories/2021/07/25/add-health-checks-to-aspnetcore.html
-// https://code-maze.com/health-checks-aspnetcore/
-// https://github.com/prometheus-net/prometheus-net
+
+
+
+
+
 public static class Extensions
 {
     public static WebApplicationBuilder AddCustomHealthCheck(
