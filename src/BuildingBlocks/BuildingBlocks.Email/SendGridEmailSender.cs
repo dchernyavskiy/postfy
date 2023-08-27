@@ -7,6 +7,7 @@ using SendGrid.Helpers.Mail;
 
 namespace BuildingBlocks.Email;
 
+// https://swimburger.net/blog/dotnet/send-emails-using-the-sendgrid-api-with-dotnet-6-and-csharp
 public class SendGridEmailSender : IEmailSender
 {
     private readonly ILogger<SendGridEmailSender> _logger;

@@ -2,7 +2,7 @@ using System.ComponentModel;
 
 namespace BuildingBlocks.Core.Types.Extensions;
 
-
+// https://stackoverflow.com/a/19621488/581476
 public static class EnumExtensions
 {
     // This extension method is broken out so you can use a similar pattern with

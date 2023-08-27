@@ -33,8 +33,8 @@ public static class LogoutEndpoint
 
         if (jwtOptions.Value.CheckRevokedAccessTokens)
         {
-
-
+            // https://dev.to/chukwutosin_/how-to-invalidate-a-jwt-using-a-blacklist-28dl
+            // https://supertokens.com/blog/revoking-access-with-a-jwt-blacklist
             // The blacklist is saved in the format => "userName_revoked_tokens": [token1, token2,...]
             var token = GetTokenFromHeader(httpContext);
             var userName = httpContext.User.Identity!.Name;

@@ -6,7 +6,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace BuildingBlocks.Swagger;
 
-
+// https://github.com/dotnet/aspnet-api-versioning/blob/93bd8dc7582ec14c8ec97997c01cfe297b085e17/examples/AspNetCore/WebApi/MinimalOpenApiExample/SwaggerDefaultValues.cs
 
 /// <summary>
 /// Represents the OpenAPI/Swashbuckle operation filter used to document information provided, but not used.

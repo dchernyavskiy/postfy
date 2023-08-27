@@ -2,6 +2,7 @@ using System.Reflection;
 
 namespace BuildingBlocks.Core.Domain;
 
+// Ref: https://josef.codes/enumeration-class-in-c-sharp-using-records/
 public abstract record EnumerationRecord<T>(int Value, string DisplayName) : IComparable<T>
     where T : EnumerationRecord<T>
 {

@@ -21,6 +21,10 @@ public static class RegistrationExtensions
     {
         var serilogOptions = builder.Configuration.BindOptions<SerilogOptions>(sectionName);
 
+        // https://andrewlock.net/creating-a-rolling-file-logging-provider-for-asp-net-core-2-0/
+        // https://github.com/serilog/serilog-extensions-hosting
+        // https://andrewlock.net/adding-serilog-to-the-asp-net-core-generic-host/
+        // Serilog replace `ILoggerFactory`,It replaces microsoft `LoggerFactory` class with `SerilogLoggerFactory`, so `ConsoleLoggerProvider` and other default microsoft logger providers don't instantiate at all with serilog
         builder.Host.UseSerilog(
             (context, serviceProvider, loggerConfiguration) =>
             {
@@ -32,43 +36,43 @@ public static class RegistrationExtensions
                     // .Enrich.WithBaggage()
                     .Enrich.WithCorrelationIdHeader()
                     .Enrich.FromLogContext()
-
+                    // https://github.com/serilog/serilog-enrichers-environment
                     .Enrich.WithEnvironmentName()
                     .Enrich.WithMachineName()
-
+                    // https://rehansaeed.com/logging-with-serilog-exceptions/
                     .Enrich.WithExceptionDetails(
                         new DestructuringOptionsBuilder()
                             .WithDefaultDestructurers()
                             .WithDestructurers(new[] { new DbUpdateExceptionDestructurer() })
                     );
 
-
+                // https://github.com/serilog/serilog-settings-configuration
                 loggerConfiguration.ReadFrom.Configuration(context.Configuration, sectionName: sectionName);
 
                 if (serilogOptions.UseConsole)
                 {
                     if (serilogOptions.UseElasticsearchJsonFormatter)
                     {
-
-
+                        // https://github.com/serilog/serilog-sinks-async
+                        // https://github.com/serilog-contrib/serilog-sinks-elasticsearch#elasticsearch-formatters
                         loggerConfiguration.WriteTo.Async(
                             writeTo => writeTo.Console(new ExceptionAsObjectJsonFormatter(renderMessage: true))
                         );
                     }
                     else
                     {
-
+                        // https://github.com/serilog/serilog-sinks-async
                         loggerConfiguration.WriteTo.Async(
                             writeTo => writeTo.Console(outputTemplate: serilogOptions.LogTemplate)
                         );
                     }
                 }
 
-
+                // https://github.com/serilog/serilog-sinks-async
                 if (!string.IsNullOrEmpty(serilogOptions.ElasticSearchUrl))
                 {
                     // elasticsearch sink internally is async
-
+                    // https://github.com/serilog-contrib/serilog-sinks-elasticsearch
                     loggerConfiguration.WriteTo.Elasticsearch(
                         new(new Uri(serilogOptions.ElasticSearchUrl))
                         {
@@ -87,7 +91,7 @@ public static class RegistrationExtensions
                     );
                 }
 
-
+                // https://github.com/serilog-contrib/serilog-sinks-grafana-loki
                 if (!string.IsNullOrEmpty(serilogOptions.GrafanaLokiUrl))
                 {
                     loggerConfiguration.WriteTo.GrafanaLoki(
@@ -106,7 +110,7 @@ public static class RegistrationExtensions
                     loggerConfiguration.WriteTo.Seq(serilogOptions.SeqUrl);
                 }
 
-
+                // https://github.com/serilog/serilog-sinks-opentelemetry
                 if (serilogOptions.ExportLogsToOpenTelemetry)
                 {
                     // export logs from serilog to opentelemetry

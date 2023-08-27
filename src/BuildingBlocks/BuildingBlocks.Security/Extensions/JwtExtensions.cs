@@ -22,10 +22,10 @@ public static class Extensions
         Action<JwtOptions>? optionConfigurator = null
     )
     {
-
-
-
-
+        // https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/issues/415
+        // https://mderriey.com/2019/06/23/where-are-my-jwt-claims/
+        // https://leastprivilege.com/2017/11/15/missing-claims-in-the-asp-net-core-2-openid-connect-handler/
+        // https://stackoverflow.com/a/50012477/581476
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
 
@@ -34,9 +34,9 @@ public static class Extensions
         var jwtOptions = configuration.BindOptions<JwtOptions>(nameof(JwtOptions));
         Guard.Against.Null(jwtOptions, nameof(jwtOptions));
 
-
-
-
+        // https://docs.microsoft.com/en-us/aspnet/core/security/authentication
+        // https://learn.microsoft.com/en-us/aspnet/core/security/authorization/limitingidentitybyscheme?view=aspnetcore-6.0#use-multiple-authentication-schemes
+        // https://auth0.com/blog/whats-new-in-dotnet-7-for-authentication-and-authorization/
         // since .NET 7, the default scheme is no longer required, when we define just one authentication scheme and It is automatically inferred
         return services
             .AddAuthentication() // no default scheme specified
@@ -129,15 +129,15 @@ public static class Extensions
     {
         services.AddAuthorization(authorizationOptions =>
         {
-
-
+            // https://docs.microsoft.com/en-us/aspnet/core/security/authorization/limitingidentitybyscheme
+            // https://andrewlock.net/setting-global-authorization-policies-using-the-defaultpolicy-and-the-fallbackpolicy-in-aspnet-core-3/
             var defaultAuthorizationPolicyBuilder = new AuthorizationPolicyBuilder(
                 JwtBearerDefaults.AuthenticationScheme
             );
             defaultAuthorizationPolicyBuilder = defaultAuthorizationPolicyBuilder.RequireAuthenticatedUser();
             authorizationOptions.DefaultPolicy = defaultAuthorizationPolicyBuilder.Build();
 
-
+            // https://docs.microsoft.com/en-us/aspnet/core/security/authorization/claims
             if (claimPolicies is { })
             {
                 foreach (var policy in claimPolicies)
@@ -156,7 +156,7 @@ public static class Extensions
                 }
             }
 
-
+            // https://docs.microsoft.com/en-us/aspnet/core/security/authorization
             if (rolePolicies is { })
             {
                 foreach (var rolePolicy in rolePolicies)

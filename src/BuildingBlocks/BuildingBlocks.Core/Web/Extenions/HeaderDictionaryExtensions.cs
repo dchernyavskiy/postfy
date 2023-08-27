@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace BuildingBlocks.Core.Web.Extenions;
 
-
+// https://khalidabuhakmeh.com/read-and-convert-querycollection-values-in-aspnet
 public static class HeaderDictionaryExtensions
 {
     public static IEnumerable<T> All<T>(this IHeaderDictionary collection, string key)

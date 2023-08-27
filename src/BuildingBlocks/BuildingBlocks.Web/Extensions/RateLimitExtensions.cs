@@ -8,7 +8,7 @@ public static partial class RateLimitExtensions
 {
     public static WebApplicationBuilder AddCustomRateLimit(this WebApplicationBuilder builder)
     {
-
+        // https://blog.maartenballiauw.be/post/2022/09/26/aspnet-core-rate-limiting-middleware.html
         builder.Services.AddRateLimiter(options =>
         {
             options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;

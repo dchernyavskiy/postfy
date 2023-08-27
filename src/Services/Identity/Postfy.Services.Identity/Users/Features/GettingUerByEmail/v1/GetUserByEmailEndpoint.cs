@@ -5,8 +5,8 @@ using Postfy.Services.Identity.Users.Features.RegisteringUser.v1;
 
 namespace Postfy.Services.Identity.Users.Features.GettingUerByEmail.v1;
 
-
-
+// https://docs.microsoft.com/en-us/aspnet/core/fundamentals/routing
+// https://docs.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis
 public static class GetUserByEmailEndpoint
 {
     internal static RouteHandlerBuilder MapGetUserByEmailEndpoint(this IEndpointRouteBuilder endpoints)

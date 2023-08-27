@@ -25,7 +25,7 @@ public static class UserManagerExtensions
     )
         where TResult : notnull
     {
-
+        // https://benjii.me/2018/01/expression-projection-magic-entity-framework-core/
         // we don't use include for loading nested navigation because with mapping we load them explicitly
         return await userManager.Users
             .OrderByDescending(x => x.CreatedAt)

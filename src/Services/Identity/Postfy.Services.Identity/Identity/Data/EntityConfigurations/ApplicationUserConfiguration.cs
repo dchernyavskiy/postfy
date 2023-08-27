@@ -27,8 +27,8 @@ internal class ApplicationUserConfiguration : IEntityTypeConfiguration<Applicati
         builder.HasIndex(x => x.Email).IsUnique();
         builder.HasIndex(x => x.NormalizedEmail).IsUnique();
 
-
-        Each User can have many entries in the UserRole join table
+        // https://docs.microsoft.com/en-us/aspnet/core/security/authentication/customize-identity-model#add-navigation-properties
+        // Each User can have many entries in the UserRole join table
         builder.HasMany(e => e.UserRoles).WithOne(e => e.User).HasForeignKey(ur => ur.UserId).IsRequired();
     }
 }

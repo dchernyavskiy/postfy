@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace BuildingBlocks.Caching.Behaviours;
 
-s://anderly.com/2019/12/12/cross-cutting-concerns-with-mediatr-pipeline-behaviors/
+// Ref: https://anderly.com/2019/12/12/cross-cutting-concerns-with-mediatr-pipeline-behaviors/
 public class CachingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
     where TResponse : notnull

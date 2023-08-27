@@ -34,7 +34,7 @@ public class IdentityContext
 
         builder.ApplyConfigurationsFromAssembly(GetType().Assembly);
 
-
+        // https://andrewlock.net/customising-asp-net-core-identity-ef-core-naming-conventions-for-postgresql/
         foreach (var entity in builder.Model.GetEntityTypes())
         {
             // Replace table names

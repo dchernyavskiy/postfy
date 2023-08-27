@@ -25,7 +25,7 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
         CancellationToken cancellationToken
     )
     {
-
+        // https://dotnetdocs.ir/Post/34/categorizing-logs-with-serilog-in-aspnet-core
         using (Serilog.Context.LogContext.PushProperty("RequestObject", _serializer.Serialize(request)))
         {
             const string prefix = nameof(LoggingBehavior<TRequest, TResponse>);

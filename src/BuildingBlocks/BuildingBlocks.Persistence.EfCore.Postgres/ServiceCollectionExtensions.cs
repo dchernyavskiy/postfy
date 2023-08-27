@@ -59,8 +59,10 @@ public static class ServiceCollectionExtensions
                             sqlOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
                         }
                     )
+                    // https://github.com/efcore/EFCore.NamingConventions
                     .UseSnakeCaseNamingConvention();
 
+                // ref: https://andrewlock.net/series/using-strongly-typed-entity-ids-to-avoid-primitive-obsession/
                 options.ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector<long>>();
 
                 options.AddInterceptors(
