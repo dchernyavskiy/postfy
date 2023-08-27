@@ -4,9 +4,9 @@ using IdentityModel;
 
 namespace Postfy.Services.Identity.Identity;
 
-
-
-
+// Ref: https://docs.duendesoftware.com/identityserver/v5/fundamentals/resources/api_resources/
+// https://docs.duendesoftware.com/identityserver/v5/fundamentals/resources/identity/
+// https://docs.duendesoftware.com/identityserver/v5/fundamentals/resources/api_scopes/
 public static class IdentityServerConfig
 {
     public static IEnumerable<IdentityResource> IdentityResources =>

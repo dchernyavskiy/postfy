@@ -9,7 +9,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace BuildingBlocks.Security.ApiKey;
 
-
+// https://josef.codes/asp-net-core-protect-your-api-with-api-keys/
 public class ApiKeyAuthenticationHandler : AuthenticationHandler<ApiKeyAuthenticationOptions>
 {
     private const string ProblemDetailsContentType = "application/problem+json";

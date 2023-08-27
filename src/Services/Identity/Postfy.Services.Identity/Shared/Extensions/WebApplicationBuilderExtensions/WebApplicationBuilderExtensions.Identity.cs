@@ -29,8 +29,8 @@ public static partial class WebApplicationBuilderExtensions
         }
 
         // Problem with .net core identity - will override our default authentication scheme `JwtBearerDefaults.AuthenticationScheme` to unwanted `Postfy.Services.Network2.Application` in `AddIdentity()` method .net identity
-
-
+        // https://github.com/IdentityServer/IdentityServer4/issues/1525
+        // https://github.com/IdentityServer/IdentityServer4/issues/1525
         // some dependencies will add here if not registered before
         builder.Services
             .AddIdentity<ApplicationUser, ApplicationRole>(options =>

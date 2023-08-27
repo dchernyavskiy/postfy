@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace BuildingBlocks.Validation;
 
-
+// https://khalidabuhakmeh.com/minimal-api-validation-with-fluentvalidation
 public class ValidateRequest<T>
 {
     private ValidationResult Validation { get; }

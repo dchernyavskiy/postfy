@@ -1,6 +1,6 @@
 namespace BuildingBlocks.Abstractions.Messaging;
 
-
+// Ref: https://www.enterpriseintegrationpatterns.com/patterns/messaging/EnvelopeWrapper.html
 public class MessageEnvelope
 {
     public MessageEnvelope(object? message, IDictionary<string, object?>? headers = null)

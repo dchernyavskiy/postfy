@@ -6,6 +6,8 @@ namespace BuildingBlocks.Core.CQRS.Events.Internal;
 /// <summary>
 /// Execute event handlers immediately
 /// Domain Events - Before Persistence
+/// Ref https://ardalis.com/immediate-domain-event-salvation-with-mediatr/
+/// https://www.weeklydevtips.com/episodes/022
 /// </summary>
 public static class DomainEventsInvoker
 {

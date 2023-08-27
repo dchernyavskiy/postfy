@@ -1,12 +1,12 @@
 namespace BuildingBlocks.Core.Domain;
 
 // Learn more:
-
-
-
-
-
-
+// https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/microservice-ddd-cqrs-patterns/implement-value-objects
+// https://enterprisecraftsmanship.com/posts/csharp-records-value-objects/
+// https://enterprisecraftsmanship.com/posts/nulls-in-value-objects/
+// https://enterprisecraftsmanship.com/posts/value-objects-when-to-create-one/
+// https://blog.devgenius.io/3-different-ways-to-implement-value-object-in-csharp-10-d8f43e1fa4dc
+// https://ardalis.com/working-with-value-objects/
 public abstract class ValueObject : IEquatable<ValueObject>
 {
     protected abstract IEnumerable<object> GetEqualityComponents();

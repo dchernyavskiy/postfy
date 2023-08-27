@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace BuildingBlocks.Core.Persistence.EfCore.Interceptors;
 
-
-
-s://www.meziantou.net/entity-framework-core-generate-tracking-columns.htm
+// https://khalidabuhakmeh.com/entity-framework-core-5-interceptors
+// https://learn.microsoft.com/en-us/ef/core/logging-events-diagnostics/interceptors#savechanges-interception
+// Ref: https://www.meziantou.net/entity-framework-core-generate-tracking-columns.htm
 public class AuditInterceptor : SaveChangesInterceptor
 {
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(

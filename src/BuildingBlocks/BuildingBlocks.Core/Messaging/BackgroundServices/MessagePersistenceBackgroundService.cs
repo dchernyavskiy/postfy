@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 
 namespace BuildingBlocks.Core.Messaging.BackgroundServices;
 
-
+// https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/hosted-services
 public class MessagePersistenceBackgroundService : BackgroundService
 {
     private readonly ILogger<MessagePersistenceBackgroundService> _logger;

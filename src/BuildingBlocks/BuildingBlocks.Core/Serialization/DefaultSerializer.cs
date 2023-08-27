@@ -49,7 +49,7 @@ public class DefaultSerializer : ISerializer
 
     private class ContractResolverWithPrivate : CamelCasePropertyNamesContractResolver
     {
-
+        // http://danielwertheim.se/json-net-private-setters/
         protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
         {
             var prop = base.CreateProperty(member, memberSerialization);

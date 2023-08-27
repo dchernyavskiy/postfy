@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BuildingBlocks.Core.Persistence.EfCore;
 
-
-
+// https://github.com/nreco/lambdaparser
+// https://github.com/dynamicexpresso/DynamicExpresso
 public static class EfCoreQueryableExtensions
 {
     public static async Task<ListResultModel<T>> ApplyPagingAsync<T>(

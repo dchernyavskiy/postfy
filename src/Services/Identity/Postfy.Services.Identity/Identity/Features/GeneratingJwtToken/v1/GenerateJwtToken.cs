@@ -30,7 +30,7 @@ public class GenerateJwtTokenHandler : ICommandHandler<GenerateJwtToken, Generat
     {
         var identityUser = request.User;
 
-        authentication successful so generate jwt and refresh tokens
+        // authentication successful so generate jwt and refresh tokens
         var allClaims = await GetClaimsAsync(request.User.UserName);
         var fullName = $"{identityUser.FirstName} {identityUser.LastName}";
 

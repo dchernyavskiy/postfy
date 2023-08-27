@@ -22,7 +22,7 @@ public static partial class WebApplicationExtensions
                 opts.EnrichDiagnosticContext = LogEnricher.EnrichFromRequest;
 
                 // this level wil use for request logging
-
+                // https://andrewlock.net/using-serilog-aspnetcore-in-asp-net-core-3-excluding-health-check-endpoints-from-serilog-request-logging/#customising-the-log-level-used-for-serilog-request-logs
                 opts.GetLevel = LogEnricher.GetLogLevel;
             });
 
