@@ -11,20 +11,8 @@ using Postfy.Services.Network.Users.Dtos;
 
 namespace Postfy.Services.Network.Posts.Dtos;
 
-public record PostBriefDto : IMapWith<Post>, IMapWith<PostBriefDtoProxy>
+public record PostBriefDtoBase
 {
-    public Guid CurrentUserId { get; }
-
-    public PostBriefDto()
-    {
-    }
-
-    public PostBriefDto(Guid currentUserId)
-    {
-        CurrentUserId = currentUserId;
-    }
-
-
     public Guid Id { get; set; }
     public string Caption { get; set; }
     public ICollection<MediaBriefDto> Medias { get; set; }
@@ -34,13 +22,15 @@ public record PostBriefDto : IMapWith<Post>, IMapWith<PostBriefDtoProxy>
     public int CommentCount { get; set; }
     public DateTime Created { get; set; }
     public ICollection<Comment> Comments { get; set; }
+}
 
+public record PostBriefDto : PostBriefDtoBase, IMapWith<Post>
+{
     public void Mapping(Profile profile)
     {
-        var currentUserId = Guid.Empty;
+        Guid currentUserId = Guid.Empty;
 
         profile.CreateMap<Post, PostBriefDto>()
-            .ConstructUsing(src => new PostBriefDto(currentUserId))
             .ForMember(x => x.LikeCount, opts => opts.MapFrom(src => src.Reactions.Count(x => x.IsLiked)))
             .ForMember(x => x.CommentCount, opts => opts.MapFrom(src => src.Comments.Count()))
             .ForMember(
@@ -48,25 +38,18 @@ public record PostBriefDto : IMapWith<Post>, IMapWith<PostBriefDtoProxy>
                 opts => opts.MapFrom(src => src.Comments.Take(2)))
             .ForMember(
                 x => x.IsLiked,
-                opts => opts.MapFrom(
-                    (src, dest) =>
-                        src.Reactions.Any(x => x.UserId == dest.CurrentUserId && x.IsLiked)))
-            ;
-
-
-        profile.CreateMap<PostBriefDtoProxy, PostBriefDto>();
-
-        profile.CreateMap<PostBriefDtoProxy, PostBriefDto>()
-            .ForMember(
-                x => x.IsLiked,
-                opts => opts.MapFrom(
-                    src =>
-                        src.Reactions.Any(x => x.UserId == src.CurrentUserId && x.IsLiked)))
-            .ForMember(x => x.LikeCount, opts => opts.MapFrom(src => src.Reactions.Count(x => x.IsLiked)))
-            .ForMember(x => x.CommentCount, opts => opts.MapFrom(src => src.Comments.Count()))
-            .ForMember(
-                x => x.Comments,
-                opts => opts.MapFrom(src => src.Comments.Take(2)))
-            ;
+                opts => opts.MapFrom(src => src.Reactions.Any(x => x.IsLiked && x.UserId == currentUserId)));
+        // profile.CreateMap<Post, PostBriefDto>()
+        //     .ForMember(x => x.LikeCount, opts => opts.MapFrom(src => src.Reactions.Count(x => x.IsLiked)))
+        //     .ForMember(x => x.CommentCount, opts => opts.MapFrom(src => src.Comments.Count()))
+        //     .ForMember(
+        //         x => x.Comments,
+        //         opts => opts.MapFrom(src => src.Comments.Take(2)))
+        //     .ForMember(
+        //         x => x.IsLiked,
+        //         opts => opts.MapFrom(
+        //             (src, dest, _, ctx) =>
+        //                 src.Reactions.Any(x => x.UserId == (Guid)ctx.Items["currentUserId"] && x.IsLiked)))
+        //     ;
     }
 }

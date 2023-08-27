@@ -15,8 +15,8 @@ public class GetChatEndpoint : EndpointBaseAsync.WithRequest<GetChat>.WithAction
         _commandProcessor = commandProcessor;
     }
 
-    [HttpPost(ChatConfigs.PrefixUri, Name = "GetChat")]
-    [ProducesResponseType(typeof(GetChatResponse), StatusCodes.Status201Created)]
+    [HttpGet(ChatConfigs.PrefixUri, Name = "GetChat")]
+    [ProducesResponseType(typeof(GetChatResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(StatusCodeProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(StatusCodeProblemDetails), StatusCodes.Status400BadRequest)]
     [SwaggerOperation(
@@ -29,7 +29,7 @@ public class GetChatEndpoint : EndpointBaseAsync.WithRequest<GetChat>.WithAction
                })]
     [ApiVersion(1.0)]
     public override async Task<ActionResult<GetChatResponse>> HandleAsync(
-        [FromBody] GetChat request,
+        [FromQuery] GetChat request,
         CancellationToken cancellationToken = new CancellationToken()
     )
     {

@@ -16,8 +16,8 @@ public class GetChatsEndpoint : EndpointBaseAsync.WithRequest<GetChats>.WithActi
         _queryProcessor = queryProcessor;
     }
 
-    [HttpGet(ChatConfigs.PrefixUri, Name = "GetChats")]
-    [ProducesResponseType(typeof(GetChatsResponse), StatusCodes.Status201Created)]
+    [HttpGet(ChatConfigs.PrefixUri + "/get-chats", Name = "GetChats")]
+    [ProducesResponseType(typeof(GetChatsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(StatusCodeProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(StatusCodeProblemDetails), StatusCodes.Status400BadRequest)]
     [SwaggerOperation(

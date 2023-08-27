@@ -42,28 +42,8 @@ public class GetPostsHandler : IQueryHandler<GetPosts, GetPostsResponse>
                         .Include(x => x.User)
                         .Where(x => x.UserId == userId)
                         .ProjectTo<PostBriefDto>(
-                            new MapperConfiguration(
-                                cfg =>
-                                {
-                                    cfg.CreateMap<User, UserBriefDto>();
-                                    cfg.CreateMap<Media, MediaBriefDto>();
-                                    cfg.CreateMap<Post, PostBriefDto>()
-                                        .ForMember(
-                                            x => x.LikeCount,
-                                            opts => opts.MapFrom(src => src.Reactions.Count(x => x.IsLiked)))
-                                        .ForMember(
-                                            x => x.CommentCount,
-                                            opts => opts.MapFrom(src => src.Comments.Count()))
-                                        .ForMember(
-                                            x => x.Comments,
-                                            opts => opts.MapFrom(src => src.Comments.Take(2)))
-                                        .ForMember(
-                                            x => x.IsLiked,
-                                            opts => opts.MapFrom(
-                                                (src) =>
-                                                    src.Reactions.Any(x => x.UserId == userId && x.IsLiked)))
-                                        ;
-                                }))
+                            _mapper.ConfigurationProvider,
+                            new {currentUserId = userId})
                         .ApplyPagingAsync(request.Page, request.PageSize, cancellationToken);
 
         return new GetPostsResponse(posts);

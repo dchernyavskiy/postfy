@@ -16,6 +16,7 @@ public class CreateMessageEndpoint : EndpointBaseAsync.WithRequest<CreateMessage
     }
 
     [HttpPost(MessageConfigs.PrefixUri, Name = "CreateMessage")]
+    [ProducesResponseType(typeof(CreateMessageResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(CreateMessageResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(StatusCodeProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(StatusCodeProblemDetails), StatusCodes.Status400BadRequest)]

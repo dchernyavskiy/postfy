@@ -17,6 +17,7 @@ public class
     }
 
     [HttpPost(ChatConfigs.PrefixUri + "/get-or-create", Name = "GetOrCreateChat")]
+    [ProducesResponseType(typeof(GetOrCreateChatResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(GetOrCreateChatResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(StatusCodeProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(StatusCodeProblemDetails), StatusCodes.Status400BadRequest)]
