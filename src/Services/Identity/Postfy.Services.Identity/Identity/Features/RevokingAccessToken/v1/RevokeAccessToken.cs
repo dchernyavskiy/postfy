@@ -33,8 +33,8 @@ public class RevokeAccessTokenHandler : ICommandHandler<RevokeAccessToken>
         if (request is null || string.IsNullOrWhiteSpace(request.Token))
             throw new BadRequestException("Token is empty.");
 
-        // https://dev.to/chukwutosin_/how-to-invalidate-a-jwt-using-a-blacklist-28dl
-        // https://supertokens.com/blog/revoking-access-with-a-jwt-blacklist
+
+
         // The blacklist is saved in the format => "userName_revoked_tokens": [token1, token2,...]
         await _cachingProvider.SetAsync(
             $"{request.UserName}_{request.Token}_revoked_token",

@@ -64,8 +64,8 @@ public class GenerateRefreshTokenHandler : ICommandHandler<GenerateRefreshToken,
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        // remove old refresh tokens from user
-        // we could also maintain them on the database with changing their revoke date
+        remove old refresh tokens from user
+        we could also maintain them on the database with changing their revoke date
         await RemoveOldRefreshTokens(request.UserId);
 
         return new GenerateRefreshTokenResponse(

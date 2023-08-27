@@ -32,8 +32,8 @@ internal class UsersConfigs : IModuleConfiguration
         // create a new sub group for each version
         var usersGroupV2 = usersVersionGroup.MapGroup(UsersPrefixUri).HasApiVersion(2.0);
 
-        // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis?view=aspnetcore-7.0#route-groups
-        // https://github.com/dotnet/aspnet-api-versioning/blob/main/examples/AspNetCore/WebApi/MinimalOpenApiExample/Program.cs
+
+
         usersGroupV1.MapRegisterNewUserEndpoint();
         usersGroupV1.MapUpdateUserStateEndpoint();
         usersGroupV1.MapGetUserByIdEndpoint();

@@ -228,7 +228,7 @@ public static class ReflectionUtilities
                 if (!visited.Contains(reference.FullName))
                 {
                     // `Load` will add assembly into the `application domain` of the caller. loading assemblies explicitly to AppDomain, because assemblies are loaded lazily
-                    // https://learn.microsoft.com/en-us/dotnet/api/system.reflection.assembly.load
+
                     queue.Enqueue(Assembly.Load(reference));
                     visited.Add(reference.FullName);
                 }

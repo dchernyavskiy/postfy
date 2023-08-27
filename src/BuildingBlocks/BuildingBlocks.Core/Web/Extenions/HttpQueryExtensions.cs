@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BuildingBlocks.Core.Web.Extenions;
 
-// ref: https://khalidabuhakmeh.com/adding-experimental-http-methods-to-aspnet-core
+-methods-to-aspnet-core
 public static class HttpQueryExtensions
 {
     public static IEndpointConventionBuilder MapQuery(

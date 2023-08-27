@@ -9,7 +9,7 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace BuildingBlocks.Core.Persistence.EfCore;
 
-// Ref: https://github.com/thangchung/clean-architecture-dotnet/blob/main/src/N8T.Infrastructure.EfCore/TxBehavior.cs
+s://github.com/thangchung/clean-architecture-dotnet/blob/main/src/N8T.Infrastructure.EfCore/TxBehavior.cs
 public class EfTxBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull, IRequest<TResponse>
     where TResponse : notnull
@@ -69,8 +69,8 @@ public class EfTxBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TRe
 
             return await strategy.ExecuteAsync(async () =>
             {
-                // https://www.thinktecture.com/en/entity-framework-core/use-transactionscope-with-caution-in-2-1/
-                // https://github.com/dotnet/efcore/issues/6233#issuecomment-242693262
+
+
                 var isInnerTransaction = _dbFacadeResolver.Database.CurrentTransaction is not null;
                 var transaction =
                     _dbFacadeResolver.Database.CurrentTransaction

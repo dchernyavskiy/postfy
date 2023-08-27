@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BuildingBlocks.Core.Persistence.EfCore;
 
-// Ref: https://andrewlock.net/series/using-strongly-typed-entity-ids-to-avoid-primitive-obsession/
-// https://andrewlock.net/strongly-typed-ids-in-ef-core-using-strongly-typed-entity-ids-to-avoid-primitive-obsession-part-4/
+s://andrewlock.net/series/using-strongly-typed-entity-ids-to-avoid-primitive-obsession/
+
 public class StronglyTypedIdValueConverterSelector<TId> : ValueConverterSelector
 {
     private readonly ConcurrentDictionary<(Type ModelClrType, Type ProviderClrType), ValueConverterInfo> _converters =

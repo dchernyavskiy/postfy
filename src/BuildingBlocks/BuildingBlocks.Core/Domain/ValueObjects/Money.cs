@@ -2,7 +2,7 @@ using Ardalis.GuardClauses;
 
 namespace BuildingBlocks.Core.Domain.ValueObjects;
 
-// https://learn.microsoft.com/en-us/ef/core/modeling/constructors
+
 public record Money
 {
     // EF

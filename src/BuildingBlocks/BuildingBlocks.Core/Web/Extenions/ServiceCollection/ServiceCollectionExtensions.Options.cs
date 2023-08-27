@@ -39,12 +39,12 @@ public static partial class ServiceCollectionExtensions
     )
         where T : class
     {
-        // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/options
-        // https://thecodeblogger.com/2021/04/21/options-pattern-in-net-ioptions-ioptionssnapshot-ioptionsmonitor/
-        // https://code-maze.com/aspnet-configuration-options/
-        // https://code-maze.com/aspnet-configuration-options-validation/
-        // https://dotnetdocs.ir/Post/42/difference-between-ioptions-ioptionssnapshot-and-ioptionsmonitor
-        // https://andrewlock.net/adding-validation-to-strongly-typed-configuration-objects-in-dotnet-6/
+
+
+
+
+
+
         services.AddOptions<T>().BindConfiguration(key).Validate(validator);
 
         // IOptions itself registered as singleton

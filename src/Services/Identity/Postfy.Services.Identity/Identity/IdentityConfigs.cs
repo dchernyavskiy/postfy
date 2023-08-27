@@ -72,8 +72,8 @@ internal class IdentityConfigs : IModuleConfiguration
             )
             .WithTags("Identity");
 
-        // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis?view=aspnetcore-7.0#route-groups
-        // https://github.com/dotnet/aspnet-api-versioning/blob/main/examples/AspNetCore/WebApi/MinimalOpenApiExample/Program.cs
+
+
         identityGroupV1.MapLoginUserEndpoint();
         identityGroupV1.MapLogoutEndpoint();
         identityGroupV1.MapSendEmailVerificationCodeEndpoint();

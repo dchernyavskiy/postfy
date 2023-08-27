@@ -45,11 +45,11 @@ public class DomainEventPublisher : IDomainEventPublisher
         if (!domainEvents.Any())
             return;
 
-        // https://github.com/dotnet-architecture/eShopOnContainers/issues/700#issuecomment-461807560
-        // https://github.com/dotnet-architecture/eShopOnContainers/blob/e05a87658128106fef4e628ccb830bc89325d9da/src/Services/Ordering/Ordering.Infrastructure/OrderingContext.cs#L65
-        // http://www.kamilgrzybek.com/design/how-to-publish-and-handle-domain-events/
-        // http://www.kamilgrzybek.com/design/handling-domain-events-missing-part/
-        // https://www.ledjonbehluli.com/posts/domain_to_integration_event/
+
+
+
+
+
 
         // Dispatch our domain events before commit
         var eventsToDispatch = domainEvents.ToList();
