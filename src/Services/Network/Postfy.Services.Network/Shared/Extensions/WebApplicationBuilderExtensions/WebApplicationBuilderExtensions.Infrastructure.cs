@@ -25,6 +25,7 @@ internal static partial class WebApplicationBuilderExtensions
 {
     public static WebApplicationBuilder AddInfrastructure(this WebApplicationBuilder builder)
     {
+        builder.Services.AddSignalR();
         builder.Services.AddCore(builder.Configuration);
 
         builder.Services.AddCustomJwtAuthentication(builder.Configuration);

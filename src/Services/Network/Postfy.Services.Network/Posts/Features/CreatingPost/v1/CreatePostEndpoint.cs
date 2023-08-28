@@ -29,14 +29,10 @@ public class CreatePostEndpoint : EndpointBaseAsync.WithRequest<CreatePost>.With
                })]
     [ApiVersion(1.0)]
     public override async Task<ActionResult<CreatePostResponse>> HandleAsync(
-        [FromBody] CreatePost request,
+        [FromForm] CreatePost request,
         CancellationToken cancellationToken = new CancellationToken()
     )
     {
-        using (var reader = new StreamReader(Request.Body))
-        {
-            var str = await reader.ReadToEndAsync();
-        }
         return await _commandProcessor.SendAsync(request, cancellationToken);
     }
 }

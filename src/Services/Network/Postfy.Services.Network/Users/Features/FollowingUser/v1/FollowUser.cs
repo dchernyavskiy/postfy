@@ -24,19 +24,19 @@ public class FollowUserHandler : ICommandHandler<FollowUser>
     {
         var userId = _securityContextAccessor.GetIdAsGuid();
 
-        var followingUser = await _context.Users
-                                .Include(x => x.Followers)
-                                .FirstOrDefaultAsync(
-                                    x => x.Id == userId,
-                                    cancellationToken: cancellationToken);
-        Guard.Against.Null(followingUser);
+        var following = await _context.Users
+                            .Include(x => x.Followers)
+                            .FirstOrDefaultAsync(
+                                x => x.Id == userId,
+                                cancellationToken: cancellationToken);
+        Guard.Against.Null(following);
 
-        var followedUser = await _context.Users.FirstOrDefaultAsync(
-                               x => x.Id == userId,
-                               cancellationToken: cancellationToken);
-        Guard.Against.Null(followedUser);
+        var follower = await _context.Users.FirstOrDefaultAsync(
+                           x => x.Id == userId,
+                           cancellationToken: cancellationToken);
+        Guard.Against.Null(follower);
 
-        followingUser.Followers.Add(followedUser);
+        following.Followers.Add(follower);
         await _context.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;

@@ -17,4 +17,5 @@ public interface INetworkDbContext : IDbContext
     DbSet<User> Users { get; }
     DbSet<Chat> Chats { get; }
     DbSet<Message> Messages { get; }
+    // DbSet<Subscription> Subscriptions { get; }
 }

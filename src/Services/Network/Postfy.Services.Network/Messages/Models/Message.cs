@@ -30,6 +30,5 @@ public class Message : Aggregate<Guid>
     public Chat Chat { get; set; }
     public Guid ChatId { get; set; }
 
-    public ICollection<User> Receivers { get; set; }
     public ICollection<Media> Medias { get; set; }
 }

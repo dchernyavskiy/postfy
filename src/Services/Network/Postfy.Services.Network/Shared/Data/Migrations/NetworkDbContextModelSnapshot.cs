@@ -345,25 +345,6 @@ namespace Postfy.Services.Network.Shared.Data.Migrations
                     b.ToTable("chat_user", "network");
                 });
 
-            modelBuilder.Entity("follower_following", b =>
-                {
-                    b.Property<Guid>("follower_id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("follower_id");
-
-                    b.Property<Guid>("following_id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("following_id");
-
-                    b.HasKey("follower_id", "following_id")
-                        .HasName("pk_follower_following");
-
-                    b.HasIndex("following_id")
-                        .HasDatabaseName("ix_follower_following_following_id");
-
-                    b.ToTable("follower_following", "network");
-                });
-
             modelBuilder.Entity("post_user", b =>
                 {
                     b.Property<Guid>("post_id")
@@ -381,6 +362,25 @@ namespace Postfy.Services.Network.Shared.Data.Migrations
                         .HasDatabaseName("ix_post_user_user_id");
 
                     b.ToTable("post_user", "network");
+                });
+
+            modelBuilder.Entity("subscriptions", b =>
+                {
+                    b.Property<Guid>("FollowerId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("follower_id");
+
+                    b.Property<Guid>("FollowingId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("following_id");
+
+                    b.HasKey("FollowerId", "FollowingId")
+                        .HasName("pk_subscriptions");
+
+                    b.HasIndex("FollowingId")
+                        .HasDatabaseName("ix_subscriptions_following_id");
+
+                    b.ToTable("subscriptions", "network");
                 });
 
             modelBuilder.Entity("Postfy.Services.Network.Comments.Models.Comment", b =>
@@ -621,23 +621,6 @@ namespace Postfy.Services.Network.Shared.Data.Migrations
                         .HasConstraintName("fk_chat_user_users_user_id");
                 });
 
-            modelBuilder.Entity("follower_following", b =>
-                {
-                    b.HasOne("Postfy.Services.Network.Users.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("follower_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_follower_following_users_follower_id");
-
-                    b.HasOne("Postfy.Services.Network.Users.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("following_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_follower_following_users_following_id");
-                });
-
             modelBuilder.Entity("post_user", b =>
                 {
                     b.HasOne("Postfy.Services.Network.Posts.Models.Post", null)
@@ -653,6 +636,27 @@ namespace Postfy.Services.Network.Shared.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_post_user_users_user_id");
+                });
+
+            modelBuilder.Entity("subscriptions", b =>
+                {
+                    b.HasOne("Postfy.Services.Network.Users.Models.User", "Follower")
+                        .WithMany("FollowerSubscriptions")
+                        .HasForeignKey("FollowerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_subscriptions_users_follower_id");
+
+                    b.HasOne("Postfy.Services.Network.Users.Models.User", "Following")
+                        .WithMany("FollowingSubscriptions")
+                        .HasForeignKey("FollowingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_subscriptions_users_following_id");
+
+                    b.Navigation("Follower");
+
+                    b.Navigation("Following");
                 });
 
             modelBuilder.Entity("Postfy.Services.Network.Chats.Models.Chat", b =>
@@ -684,6 +688,10 @@ namespace Postfy.Services.Network.Shared.Data.Migrations
             modelBuilder.Entity("Postfy.Services.Network.Users.Models.User", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("FollowerSubscriptions");
+
+                    b.Navigation("FollowingSubscriptions");
 
                     b.Navigation("Messages");
 

@@ -17,12 +17,11 @@ public class UserRegisteredConsumer : IConsumer<UserRegisteredV1>
 
     public async Task Consume(ConsumeContext<UserRegisteredV1> context)
     {
-        var user = new User()
-                   {
-                       FirstName = context.Message.FirstName,
-                       LastName = context.Message.LastName,
-                       ProfileName = context.Message.UserName
-                   };
+        var user = User.Create(
+            context.Message.IdentityId,
+            context.Message.FirstName,
+            context.Message.LastName,
+            context.Message.UserName);
         await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync();
     }

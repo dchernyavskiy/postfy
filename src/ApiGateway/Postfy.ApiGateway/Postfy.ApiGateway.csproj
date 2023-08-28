@@ -28,8 +28,6 @@
     <PackageReference Include="Serilog.AspNetCore" />
     <PackageReference Include="Serilog.Sinks.SpectreConsole" />
     <PackageReference Include="Yarp.ReverseProxy" />
-    <PackageReference Include="Ocelot" Version="19.0.2" />
-    <PackageReference Include="MMLib.SwaggerForOcelot" Version="6.3.2" />
   </ItemGroup>
 
   <ItemGroup>

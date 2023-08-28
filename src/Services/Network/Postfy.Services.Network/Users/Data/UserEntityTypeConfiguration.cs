@@ -22,11 +22,20 @@ public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasMany(x => x.Followers)
             .WithMany(x => x.Followings)
-            .UsingEntity(
-                "follower_following",
-                l => l.HasOne(typeof(User)).WithMany().HasForeignKey("follower_id").HasPrincipalKey(nameof(User.Id)),
-                r => r.HasOne(typeof(User)).WithMany().HasForeignKey("following_id").HasPrincipalKey(nameof(User.Id)),
-                j => j.HasKey("follower_id", "following_id"));
+            .UsingEntity<Subscription>(
+                nameof(Subscription).Pluralize().Underscore(),
+                r => r.HasOne(x => x.Follower)
+                    .WithMany(x => x.FollowerSubscriptions)
+                    .HasForeignKey(x => x.FollowerId)
+                    .OnDelete(DeleteBehavior.Cascade),
+                l => l.HasOne(x => x.Following)
+                    .WithMany(x => x.FollowingSubscriptions)
+                    .HasForeignKey(x => x.FollowingId)
+                    .OnDelete(DeleteBehavior.Cascade),
+                typeBuilder =>
+                {
+                    typeBuilder.HasKey(x => new {x.FollowerId, x.FollowingId});
+                });
 
         builder.HasMany(x => x.Reactions)
             .WithOne(x => x.User)
