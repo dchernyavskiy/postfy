@@ -79,19 +79,6 @@ namespace Postfy.Services.Network.Shared.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "follower_following",
-                schema: "network",
-                columns: table => new
-                {
-                    followerid = table.Column<Guid>(name: "follower_id", type: "uuid", nullable: false),
-                    followingid = table.Column<Guid>(name: "following_id", type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_follower_following", x => new { x.followerid, x.followingid });
-                });
-
-            migrationBuilder.CreateTable(
                 name: "message_medias",
                 schema: "network",
                 columns: table => new
@@ -150,11 +137,11 @@ namespace Postfy.Services.Network.Shared.Data.Migrations
                     firstname = table.Column<string>(name: "first_name", type: "character varying(100)", maxLength: 100, nullable: false),
                     lastname = table.Column<string>(name: "last_name", type: "character varying(100)", maxLength: 100, nullable: false),
                     profilename = table.Column<string>(name: "profile_name", type: "character varying(100)", maxLength: 100, nullable: false),
-                    signupdate = table.Column<DateTime>(name: "signup_date", type: "timestamp with time zone", nullable: false, defaultValueSql: "now()"),
                     profileimageid = table.Column<Guid>(name: "profile_image_id", type: "uuid", nullable: true),
                     profileimageurl = table.Column<string>(name: "profile_image_url", type: "text", nullable: true),
                     profileimagetype = table.Column<string>(name: "profile_image_type", type: "text", nullable: true),
                     profileimageposition = table.Column<int>(name: "profile_image_position", type: "integer", nullable: true),
+                    signupdate = table.Column<DateTime>(name: "signup_date", type: "timestamp with time zone", nullable: false, defaultValueSql: "now()"),
                     messageid = table.Column<Guid>(name: "message_id", type: "uuid", nullable: true),
                     created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     createdby = table.Column<int>(name: "created_by", type: "integer", nullable: true),
@@ -196,6 +183,33 @@ namespace Postfy.Services.Network.Shared.Data.Migrations
                     table.ForeignKey(
                         name: "fk_posts_users_user_id",
                         column: x => x.userid,
+                        principalSchema: "network",
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "subscriptions",
+                schema: "network",
+                columns: table => new
+                {
+                    followerid = table.Column<Guid>(name: "follower_id", type: "uuid", nullable: false),
+                    followingid = table.Column<Guid>(name: "following_id", type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_subscriptions", x => new { x.followerid, x.followingid });
+                    table.ForeignKey(
+                        name: "fk_subscriptions_users_follower_id",
+                        column: x => x.followerid,
+                        principalSchema: "network",
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_subscriptions_users_following_id",
+                        column: x => x.followingid,
                         principalSchema: "network",
                         principalTable: "users",
                         principalColumn: "id",
@@ -321,12 +335,6 @@ namespace Postfy.Services.Network.Shared.Data.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_follower_following_following_id",
-                schema: "network",
-                table: "follower_following",
-                column: "following_id");
-
-            migrationBuilder.CreateIndex(
                 name: "ix_message_medias_id",
                 schema: "network",
                 table: "message_medias",
@@ -423,6 +431,12 @@ namespace Postfy.Services.Network.Shared.Data.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_subscriptions_following_id",
+                schema: "network",
+                table: "subscriptions",
+                column: "following_id");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_users_id",
                 schema: "network",
                 table: "users",
@@ -463,26 +477,6 @@ namespace Postfy.Services.Network.Shared.Data.Migrations
                 principalSchema: "network",
                 principalTable: "users",
                 principalColumn: "id");
-
-            migrationBuilder.AddForeignKey(
-                name: "fk_follower_following_users_follower_id",
-                schema: "network",
-                table: "follower_following",
-                column: "follower_id",
-                principalSchema: "network",
-                principalTable: "users",
-                principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "fk_follower_following_users_following_id",
-                schema: "network",
-                table: "follower_following",
-                column: "following_id",
-                principalSchema: "network",
-                principalTable: "users",
-                principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "fk_message_medias_messages_message_id",
@@ -526,10 +520,6 @@ namespace Postfy.Services.Network.Shared.Data.Migrations
                 schema: "network");
 
             migrationBuilder.DropTable(
-                name: "follower_following",
-                schema: "network");
-
-            migrationBuilder.DropTable(
                 name: "message_medias",
                 schema: "network");
 
@@ -543,6 +533,10 @@ namespace Postfy.Services.Network.Shared.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "reactions",
+                schema: "network");
+
+            migrationBuilder.DropTable(
+                name: "subscriptions",
                 schema: "network");
 
             migrationBuilder.DropTable(

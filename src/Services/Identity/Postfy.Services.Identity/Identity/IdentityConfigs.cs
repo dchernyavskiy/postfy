@@ -78,7 +78,7 @@ internal class IdentityConfigs : IModuleConfiguration
         identityGroupV1.MapLogoutEndpoint();
         identityGroupV1.MapSendEmailVerificationCodeEndpoint();
         identityGroupV1.MapSendVerifyEmailEndpoint();
-        identityGroupV1.MapRefreshTokenEndpoint();
+        // identityGroupV1.MapRefreshTokenEndpoint();
         identityGroupV1.MapRevokeTokenEndpoint();
         identityGroupV1.MapRevokeAccessTokenEndpoint();
         identityGroupV1.MapGetClaimsEndpoint();

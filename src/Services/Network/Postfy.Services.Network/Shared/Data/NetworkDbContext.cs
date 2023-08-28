@@ -33,4 +33,5 @@ public class NetworkDbContext : EfDbContextBase, INetworkDbContext
     public DbSet<User> Users => Set<User>();
     public DbSet<Chat> Chats => Set<Chat>();
     public DbSet<Message> Messages => Set<Message>();
+    // public DbSet<Subscription> Subscriptions => Set<Subscription>();
 }

@@ -21,11 +21,24 @@ public class User : Aggregate<Guid>
     public Media? ProfileImage { get; set; }
     public DateTime SignupDate { get; set; }
 
+    public static User Create(Guid id, string firstName, string lastName, string profileName)
+    {
+        return new User() {Id = id, FirstName = firstName, LastName = lastName, ProfileName = profileName};
+    }
+
     public ICollection<Chat> Chats { get; set; }
     public ICollection<Message> Messages { get; set; }
     public ICollection<Post> Posts { get; set; }
     public ICollection<Post> SavedPosts { get; set; }
+
     public ICollection<User> Followers { get; set; }
+
+    // public ICollection<User> Followers => Subscriptions.Select(x => x.Follower).ToList();
+    public ICollection<Subscription> FollowerSubscriptions { get; set; }
+
+    public ICollection<Subscription> FollowingSubscriptions { get; set; }
+
+    // public ICollection<User> Followings => Subscriptions.Select(x => x.Following).ToList();
     public ICollection<User> Followings { get; set; }
     public ICollection<Reaction> Reactions { get; set; }
     public ICollection<Comment> Comments { get; set; }

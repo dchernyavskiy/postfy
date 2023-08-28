@@ -21,11 +21,12 @@ public class MessageEntityTypeConfiguration : IEntityTypeConfiguration<Message>
         builder.HasOne(x => x.Parent)
             .WithMany(x => x.Children)
             .HasForeignKey(x => x.ParentId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasOne(x => x.Post)
             .WithOne(x => x.Message)
-            .HasForeignKey<Post>(x => x.MessageId);
+            .HasForeignKey<Post>(x => x.MessageId)
+            .IsRequired(false);
 
         builder.OwnsMany(
             x => x.Medias,
