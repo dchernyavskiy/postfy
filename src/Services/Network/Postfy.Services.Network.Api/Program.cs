@@ -25,32 +25,32 @@ builder.Host.UseDefaultServiceProvider(
         // https://blog.ploeh.dk/2014/06/02/captive-dependency/
         // https://andrewlock.net/new-in-asp-net-core-3-service-provider-validation/
         options.ValidateScopes =
-            context.HostingEnvironment.IsDevelopment()
-            || context.HostingEnvironment.IsTest()
-            || context.HostingEnvironment.IsStaging();
+            context.HostingEnvironment.IsDevelopment() ||
+            context.HostingEnvironment.IsTest() ||
+            context.HostingEnvironment.IsStaging();
 
         // Issue with masstransit #85
         // options.ValidateOnBuild = true;
-    }
-);
+    });
 
 builder.Services
     .AddControllers(
-        options => options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()))
-    )
-    .AddNewtonsoftJson(options =>
-    {
-        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-        // https://stackoverflow.com/questions/36452468/swagger-ui-web-api-documentation-present-enums-as-strings
-        // options.SerializerSettings.Converters.Add(new StringEnumConverter()); // sending enum string to and from client instead of number
-    })
+        options => options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer())))
+    .AddNewtonsoftJson(
+        options =>
+        {
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            // https://stackoverflow.com/questions/36452468/swagger-ui-web-api-documentation-present-enums-as-strings
+            // options.SerializerSettings.Converters.Add(new StringEnumConverter()); // sending enum string to and from client instead of number
+        })
     .AddControllersAsServices();
 
 // https://www.talkingdotnet.com/disable-automatic-model-state-validation-in-asp-net-core-2-1/
-builder.Services.Configure<ApiBehaviorOptions>(options =>
-{
-    options.SuppressModelStateInvalidFilter = true;
-});
+builder.Services.Configure<ApiBehaviorOptions>(
+    options =>
+    {
+        options.SuppressModelStateInvalidFilter = true;
+    });
 
 builder.Services.AddValidatedOptions<AppOptions>();
 
@@ -59,6 +59,19 @@ builder.AddMinimalEndpoints();
 
 /*----------------- Module Services Setup ------------------*/
 builder.AddModulesServices();
+builder.Services.AddCors(
+    options =>
+    {
+        options.AddPolicy(
+            "AllowAngularClient",
+            policy =>
+            {
+                policy.WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            });
+    });
 
 var app = builder.Build();
 
@@ -71,8 +84,8 @@ await app.ConfigureModules();
 // https://stackoverflow.com/questions/57846127/what-are-the-differences-between-app-userouting-and-app-useendpoints
 // in .net 6 and above we don't need UseRouting and UseEndpoints but if ordering is important we should write it
 // app.UseRouting();
-app.UseAppCors();
-
+// app.UseAppCors();
+app.UseCors("AllowAngularClient");
 // https://learn.microsoft.com/en-us/aspnet/core/diagnostics/asp0014
 app.MapControllers();
 
@@ -90,4 +103,6 @@ if (!app.Environment.IsProduction())
 
 await app.RunAsync();
 
-public partial class Program { }
+public partial class Program
+{
+}

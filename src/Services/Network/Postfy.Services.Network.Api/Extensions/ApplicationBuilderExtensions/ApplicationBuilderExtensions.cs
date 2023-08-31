@@ -7,12 +7,20 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     public static IApplicationBuilder UseAppCors(this IApplicationBuilder app)
     {
-        app.UseCors(p =>
-        {
-            p.AllowAnyOrigin();
-            p.AllowAnyMethod();
-            p.AllowAnyHeader();
-        });
+        // app.UseCors(p =>
+        // {
+        //     p.AllowAnyOrigin();
+        //     p.AllowAnyMethod();
+        //     p.AllowAnyHeader();
+        // });
+        app.UseCors(
+            p =>
+            {
+                p.WithOrigins("http://localhost:4200/")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            });
 
         return app;
     }
