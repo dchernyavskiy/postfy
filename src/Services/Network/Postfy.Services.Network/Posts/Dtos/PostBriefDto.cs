@@ -39,17 +39,5 @@ public record PostBriefDto : PostBriefDtoBase, IMapWith<Post>
             .ForMember(
                 x => x.IsLiked,
                 opts => opts.MapFrom(src => src.Reactions.Any(x => x.IsLiked && x.UserId == currentUserId)));
-        // profile.CreateMap<Post, PostBriefDto>()
-        //     .ForMember(x => x.LikeCount, opts => opts.MapFrom(src => src.Reactions.Count(x => x.IsLiked)))
-        //     .ForMember(x => x.CommentCount, opts => opts.MapFrom(src => src.Comments.Count()))
-        //     .ForMember(
-        //         x => x.Comments,
-        //         opts => opts.MapFrom(src => src.Comments.Take(2)))
-        //     .ForMember(
-        //         x => x.IsLiked,
-        //         opts => opts.MapFrom(
-        //             (src, dest, _, ctx) =>
-        //                 src.Reactions.Any(x => x.UserId == (Guid)ctx.Items["currentUserId"] && x.IsLiked)))
-        //     ;
     }
 }

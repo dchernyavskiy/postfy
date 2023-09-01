@@ -1,12 +1,10 @@
 using Bogus;
-using BuildingBlocks.Core.Extensions;
 using BuildingBlocks.Core.Web;
 using BuildingBlocks.Core.Web.Extenions;
 using BuildingBlocks.Core.Web.Extenions.ServiceCollection;
 using BuildingBlocks.Swagger;
 using BuildingBlocks.Web;
 using BuildingBlocks.Web.Extensions;
-using Postfy.Services.Network.Api.Extensions.ApplicationBuilderExtensions;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Spectre.Console;
 
@@ -75,6 +73,7 @@ builder.Services.AddCors(
 
 var app = builder.Build();
 
+app.UseCors("AllowAngularClient");
 /*----------------- Module Middleware Setup ------------------*/
 await app.ConfigureModules();
 
@@ -85,7 +84,6 @@ await app.ConfigureModules();
 // in .net 6 and above we don't need UseRouting and UseEndpoints but if ordering is important we should write it
 // app.UseRouting();
 // app.UseAppCors();
-app.UseCors("AllowAngularClient");
 // https://learn.microsoft.com/en-us/aspnet/core/diagnostics/asp0014
 app.MapControllers();
 

@@ -36,11 +36,8 @@ internal static partial class WebApplicationBuilderExtensions
                               new(NetworkConstants.Role.User, new List<string> {NetworkConstants.Role.User})
                           });
 
-        // https://www.michaco.net/blog/EnvironmentVariablesAndConfigurationInASPNETCoreApps#environment-variables-and-configuration
-        // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-6.0#non-prefixed-environment-variables
         builder.Configuration.AddEnvironmentVariables("postfy_network_env_");
 
-        // https://github.com/tonerdo/dotnet-env
         DotNetEnv.Env.TraversePath().Load();
 
         builder.AddCompression();
@@ -111,26 +108,6 @@ internal static partial class WebApplicationBuilderExtensions
                        });
 
         builder.Services.AddPostgresMessagePersistence(builder.Configuration);
-
-        // https://blog.maartenballiauw.be/post/2022/09/26/aspnet-core-rate-limiting-middleware.html
-        builder.Services.AddRateLimiter(
-            options =>
-            {
-                // rate limiter that limits all to 10 requests per minute, per authenticated username (or hostname if not authenticated)
-                options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(
-                    httpContext =>
-                        RateLimitPartition.GetFixedWindowLimiter(
-                            partitionKey: httpContext.User.Identity?.Name ??
-                                          httpContext.Request.Headers.Host.ToString(),
-                            factory: partition =>
-                                         new FixedWindowRateLimiterOptions
-                                         {
-                                             AutoReplenishment = true,
-                                             PermitLimit = 10,
-                                             QueueLimit = 0,
-                                             Window = TimeSpan.FromMinutes(1)
-                                         }));
-            });
 
         builder.AddCustomMassTransit(
             (context, cfg) =>
