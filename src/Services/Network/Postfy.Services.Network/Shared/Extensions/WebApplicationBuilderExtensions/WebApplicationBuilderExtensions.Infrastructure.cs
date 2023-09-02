@@ -6,6 +6,7 @@ using BuildingBlocks.Core.Mapping;
 using BuildingBlocks.Core.Persistence.EfCore;
 using BuildingBlocks.Core.Registrations;
 using BuildingBlocks.Core.Web.Extenions;
+using BuildingBlocks.Core.Web.Extenions.ServiceCollection;
 using BuildingBlocks.Email;
 using BuildingBlocks.HealthCheck;
 using BuildingBlocks.Integration.MassTransit;
@@ -17,6 +18,9 @@ using BuildingBlocks.Security.Jwt;
 using BuildingBlocks.Swagger;
 using BuildingBlocks.Validation;
 using BuildingBlocks.Web.Extensions;
+using Elastic.Clients.Elasticsearch;
+using Nest;
+using Postfy.Services.Network.Shared.Options;
 using Postfy.Services.Network.Users;
 
 namespace Postfy.Services.Network.Shared.Extensions.WebApplicationBuilderExtensions;
@@ -36,11 +40,8 @@ internal static partial class WebApplicationBuilderExtensions
                               new(NetworkConstants.Role.User, new List<string> {NetworkConstants.Role.User})
                           });
 
-        // https://www.michaco.net/blog/EnvironmentVariablesAndConfigurationInASPNETCoreApps#environment-variables-and-configuration
-        // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-6.0#non-prefixed-environment-variables
         builder.Configuration.AddEnvironmentVariables("postfy_network_env_");
 
-        // https://github.com/tonerdo/dotnet-env
         DotNetEnv.Env.TraversePath().Load();
 
         builder.AddCompression();
@@ -112,26 +113,6 @@ internal static partial class WebApplicationBuilderExtensions
 
         builder.Services.AddPostgresMessagePersistence(builder.Configuration);
 
-        // https://blog.maartenballiauw.be/post/2022/09/26/aspnet-core-rate-limiting-middleware.html
-        builder.Services.AddRateLimiter(
-            options =>
-            {
-                // rate limiter that limits all to 10 requests per minute, per authenticated username (or hostname if not authenticated)
-                options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(
-                    httpContext =>
-                        RateLimitPartition.GetFixedWindowLimiter(
-                            partitionKey: httpContext.User.Identity?.Name ??
-                                          httpContext.Request.Headers.Host.ToString(),
-                            factory: partition =>
-                                         new FixedWindowRateLimiterOptions
-                                         {
-                                             AutoReplenishment = true,
-                                             PermitLimit = 10,
-                                             QueueLimit = 0,
-                                             Window = TimeSpan.FromMinutes(1)
-                                         }));
-            });
-
         builder.AddCustomMassTransit(
             (context, cfg) =>
             {
@@ -144,6 +125,24 @@ internal static partial class WebApplicationBuilderExtensions
         builder.AddCustomAutoMapper(Assembly.GetExecutingAssembly());
 
         builder.AddCustomCaching();
+
+        builder.Services.AddConfigurationOptions<ElasticsearchOptions>();
+        builder.Services.AddSingleton<ElasticsearchClient>(
+            sp =>
+            {
+                var options = sp.GetRequiredService<ElasticsearchOptions>();
+                var settings = new ElasticsearchClientSettings(new Uri(options.Url))
+                    .DefaultIndex("default-index");
+                return new ElasticsearchClient(settings);
+            });
+        builder.Services.AddSingleton<IElasticClient>(
+            sp =>
+            {
+                var options = sp.GetRequiredService<ElasticsearchOptions>();
+                var settings = new ConnectionSettings(new Uri(options.Url))
+                    .DefaultIndex("default_index");
+                return new ElasticClient(settings);
+            });
 
         return builder;
     }

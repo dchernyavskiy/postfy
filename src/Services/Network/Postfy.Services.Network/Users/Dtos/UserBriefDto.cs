@@ -1,3 +1,4 @@
+using AutoMapper;
 using BuildingBlocks.Abstractions.Mapping;
 using Postfy.Services.Network.Shared.Dtos;
 using Postfy.Services.Network.Shared.Models;
@@ -12,4 +13,6 @@ public class UserBriefDto : IMapWith<User>
     public string LastName { get; set; }
     public string ProfileName { get; set; }
     public MediaBriefDto? ProfileImage { get; set; }
+
+
 }

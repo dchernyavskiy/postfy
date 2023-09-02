@@ -8,11 +8,11 @@ using Serilog.Sinks.SpectreConsole;
 using Yarp.ReverseProxy.Transforms;
 
 Log.Logger = new LoggerConfiguration().MinimumLevel
-    .Override("Microsoft", LogEventLevel.Information)
+    .Override("Microsoft", LogEventLevel.Verbose)
     .Enrich.FromLogContext()
     .WriteTo.SpectreConsole(
         "{Timestamp:HH:mm:ss} [{Level:u4}] {Message:lj}{NewLine}{Exception}",
-        LogEventLevel.Information)
+        LogEventLevel.Verbose)
     .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
