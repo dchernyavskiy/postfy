@@ -54,6 +54,9 @@
 
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Files.Shares" />
+    <PackageReference Include="Elastic.Clients.Elasticsearch" />
+    <PackageReference Include="Elasticsearch.Net" />
+    <PackageReference Include="NEST" />
     <PackageReference Include="Riok.Mapperly" />
   </ItemGroup>
 

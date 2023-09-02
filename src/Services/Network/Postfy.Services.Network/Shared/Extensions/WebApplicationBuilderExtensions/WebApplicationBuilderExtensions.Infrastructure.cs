@@ -6,6 +6,7 @@ using BuildingBlocks.Core.Mapping;
 using BuildingBlocks.Core.Persistence.EfCore;
 using BuildingBlocks.Core.Registrations;
 using BuildingBlocks.Core.Web.Extenions;
+using BuildingBlocks.Core.Web.Extenions.ServiceCollection;
 using BuildingBlocks.Email;
 using BuildingBlocks.HealthCheck;
 using BuildingBlocks.Integration.MassTransit;
@@ -17,6 +18,9 @@ using BuildingBlocks.Security.Jwt;
 using BuildingBlocks.Swagger;
 using BuildingBlocks.Validation;
 using BuildingBlocks.Web.Extensions;
+using Elastic.Clients.Elasticsearch;
+using Nest;
+using Postfy.Services.Network.Shared.Options;
 using Postfy.Services.Network.Users;
 
 namespace Postfy.Services.Network.Shared.Extensions.WebApplicationBuilderExtensions;
@@ -121,6 +125,24 @@ internal static partial class WebApplicationBuilderExtensions
         builder.AddCustomAutoMapper(Assembly.GetExecutingAssembly());
 
         builder.AddCustomCaching();
+
+        builder.Services.AddConfigurationOptions<ElasticsearchOptions>();
+        builder.Services.AddSingleton<ElasticsearchClient>(
+            sp =>
+            {
+                var options = sp.GetRequiredService<ElasticsearchOptions>();
+                var settings = new ElasticsearchClientSettings(new Uri(options.Url))
+                    .DefaultIndex("default-index");
+                return new ElasticsearchClient(settings);
+            });
+        builder.Services.AddSingleton<IElasticClient>(
+            sp =>
+            {
+                var options = sp.GetRequiredService<ElasticsearchOptions>();
+                var settings = new ConnectionSettings(new Uri(options.Url))
+                    .DefaultIndex("default_index");
+                return new ElasticClient(settings);
+            });
 
         return builder;
     }

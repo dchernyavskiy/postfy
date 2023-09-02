@@ -26,7 +26,6 @@ internal static class MassTransitExtensions
                         e.ExchangeType = ExchangeType.Fanout;
                     });
                 re.ConfigureConsumer<UserRegisteredConsumer>(context);
-                re.RethrowFaultedMessages();
             });
 
         cfg.ReceiveEndpoint(
