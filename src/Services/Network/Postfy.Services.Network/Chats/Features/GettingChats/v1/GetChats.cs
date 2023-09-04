@@ -39,7 +39,7 @@ public class GetChatsHandler : IQueryHandler<GetChats, GetChatsResponse>
         var userId = _securityContextAccessor.GetIdAsGuid();
 
         var chats = await _context.Chats
-                        .Where(x => x.Users.Any(u => u.Id == userId))
+                        .Where(x => x.Users.Any(u => u.Id == userId) && x.Messages.Any())
                         .ProjectTo<ChatBriefDto>(
                             _mapper.ConfigurationProvider,
                             new {currentUserId = userId})

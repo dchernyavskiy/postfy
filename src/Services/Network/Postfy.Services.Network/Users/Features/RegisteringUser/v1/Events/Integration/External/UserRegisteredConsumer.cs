@@ -8,21 +8,20 @@ namespace Postfy.Services.Network.Users.Features.RegisteringUser.v1.Events.Integ
 
 public class UserRegisteredConsumer : IConsumer<UserRegisteredV1>
 {
-    private readonly INetworkDbContext _context;
+    private readonly ISender _sender;
 
-    public UserRegisteredConsumer(INetworkDbContext context)
+    public UserRegisteredConsumer(ISender sender)
     {
-        _context = context;
+        _sender = sender;
     }
 
     public async Task Consume(ConsumeContext<UserRegisteredV1> context)
     {
-        var user = User.Create(
+        var command = new RegisterUser(
             context.Message.IdentityId,
             context.Message.FirstName,
             context.Message.LastName,
             context.Message.UserName);
-        await _context.Users.AddAsync(user);
-        await _context.SaveChangesAsync();
+        await _sender.Send(command);
     }
 }

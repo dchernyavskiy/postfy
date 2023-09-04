@@ -24,20 +24,6 @@ public record PostDto : IMapWith<Post>
         profile.CreateMap<Post, PostDto>()
             .ForMember(x => x.LikeCount, opts => opts.MapFrom(src => src.Reactions.Count(x => x.IsLiked)))
             .ForMember(x => x.CommentCount, opts => opts.MapFrom(src => src.Comments.Count()))
-            .AfterMap(
-                (src, dest, ctx) =>
-                {
-                    try
-                    {
-                        if (ctx.Items.TryGetValue("UserId", out var userId))
-                        {
-                            dest.IsLiked = src.Reactions.Any(x => x.IsLiked && x.UserId == (Guid)userId);
-                        }
-                    }
-                    catch
-                    {
-                        // ignored
-                    }
-                });
+            ;
     }
 }

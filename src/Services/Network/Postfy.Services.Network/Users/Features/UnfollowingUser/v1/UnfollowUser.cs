@@ -24,19 +24,19 @@ public class UnfollowUserHandler : ICommandHandler<UnfollowUser>
     {
         var userId = _securityContextAccessor.GetIdAsGuid();
 
-        var following = await _context.Users
-                            .Include(x => x.Followers)
-                            .FirstOrDefaultAsync(
-                                x => x.Id == userId,
-                                cancellationToken: cancellationToken);
-        Guard.Against.Null(following);
-
-        var follower = await _context.Users.FirstOrDefaultAsync(
-                           x => x.Id == userId,
-                           cancellationToken: cancellationToken);
+        var follower = await _context.Users
+                           .Include(x => x.Followings)
+                           .FirstOrDefaultAsync(
+                               x => x.Id == userId,
+                               cancellationToken: cancellationToken);
         Guard.Against.Null(follower);
 
-        following.Followers.Remove(follower);
+        var following = await _context.Users.FirstOrDefaultAsync(
+                            x => x.Id == request.UserId,
+                            cancellationToken: cancellationToken);
+        Guard.Against.Null(following);
+
+        follower.Followings.Remove(following);
         await _context.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;
