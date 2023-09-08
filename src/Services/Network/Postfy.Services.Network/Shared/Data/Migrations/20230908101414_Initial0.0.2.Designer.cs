@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Postfy.Services.Network.Shared.Data;
@@ -11,9 +12,11 @@ using Postfy.Services.Network.Shared.Data;
 namespace Postfy.Services.Network.Shared.Data.Migrations
 {
     [DbContext(typeof(NetworkDbContext))]
-    partial class NetworkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230908101414_Initial0.0.2")]
+    partial class Initial002
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -285,11 +288,6 @@ namespace Postfy.Services.Network.Shared.Data.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("created_by");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("email");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -306,11 +304,6 @@ namespace Postfy.Services.Network.Shared.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("bigint")
                         .HasColumnName("original_version");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("phone_number");
 
                     b.Property<string>("ProfileName")
                         .IsRequired()

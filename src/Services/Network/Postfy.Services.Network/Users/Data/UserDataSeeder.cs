@@ -22,6 +22,8 @@ public class UserDataSeeder : IDataSeeder
                            {
                                FirstName = f.Name.FirstName(),
                                LastName = f.Name.LastName(),
+                               Email = f.Internet.Email(),
+                               PhoneNumber = f.Phone.PhoneNumber(),
                                ProfileName = f.Internet.UserName(),
                                ProfileImage = new MediaFaker().Generate()
                            };

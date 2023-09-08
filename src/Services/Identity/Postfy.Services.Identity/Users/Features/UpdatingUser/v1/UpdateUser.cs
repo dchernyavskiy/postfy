@@ -2,6 +2,7 @@ using Ardalis.GuardClauses;
 using BuildingBlocks.Abstractions.CQRS.Commands;
 using BuildingBlocks.Abstractions.Messaging;
 using BuildingBlocks.Core.Exception;
+using BuildingBlocks.Core.Exception.Types;
 using BuildingBlocks.Security.Extensions;
 using BuildingBlocks.Security.Jwt;
 using Microsoft.AspNetCore.Identity;
@@ -31,9 +32,15 @@ public class UpdateUserHandler : ICommandHandler<UpdateUser>
         var identityUser = await _userManager.FindByIdAsync(request.UserId.ToString());
         Guard.Against.NotFound(identityUser, new IdentityUserNotFoundException(request.UserId));
 
-        if (string.IsNullOrEmpty(request.FirstName)) identityUser.FirstName = request.FirstName;
-        if (string.IsNullOrEmpty(request.LastName)) identityUser.LastName = request.LastName;
-        if (string.IsNullOrEmpty(request.UserName)) identityUser.UserName = request.UserName;
+        var anotherUser = await _userManager.FindByNameAsync(request.UserName);
+        if (anotherUser != null && anotherUser.Id != identityUser.Id)
+        {
+            throw new AppException($"User with username {request.UserName} already exists.");
+        }
+
+        if (!string.IsNullOrEmpty(request.FirstName)) identityUser.FirstName = request.FirstName;
+        if (!string.IsNullOrEmpty(request.LastName)) identityUser.LastName = request.LastName;
+        if (!string.IsNullOrEmpty(request.UserName)) identityUser.UserName = request.UserName;
 
         await _userManager.UpdateAsync(identityUser);
 
