@@ -34,6 +34,7 @@
     <PackageReference Include="Duende.IdentityServer.Storage" />
     <PackageReference Include="Duende.IdentityServer.AspNetIdentity" />
     <PackageReference Include="Duende.IdentityServer.EntityFramework" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.62.0" />
   </ItemGroup>
 
   <!-- Copy appsetings files to test projects for reading from ConfigutationBuilder directly-->
@@ -41,11 +42,11 @@
 
   <!--  Copy appsetings files to test projects for reading from ConfigutationBuilder directly-->
 
-<!--  https://devblogs.microsoft.com/nuget/introducing-central-package-management/-->
-<!--  <ItemGroup>-->
-<!--    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" VersionOverride="11.0.0"/>-->
-<!--    <PackageReference Include="AutoMapper" VersionOverride="11.0.0"/>-->
-<!--  </ItemGroup>-->
+  <!--  https://devblogs.microsoft.com/nuget/introducing-central-package-management/-->
+  <!--  <ItemGroup>-->
+  <!--    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" VersionOverride="11.0.0"/>-->
+  <!--    <PackageReference Include="AutoMapper" VersionOverride="11.0.0"/>-->
+  <!--  </ItemGroup>-->
 
   <ItemGroup>
     <InternalsVisibleTo Include="Flora.Services.Identity.IntegrationTests" />

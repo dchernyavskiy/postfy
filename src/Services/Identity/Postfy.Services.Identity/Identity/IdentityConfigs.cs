@@ -14,6 +14,7 @@ using Postfy.Services.Identity.Identity.Features.VerifyingEmail.v1;
 using Postfy.Services.Identity.Shared.Extensions.WebApplicationBuilderExtensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Postfy.Services.Identity.Identity.Data;
+using Postfy.Services.Identity.Identity.Features.LoginWithGoogle.v1;
 using Postfy.Services.Identity.Shared;
 
 namespace Postfy.Services.Identity.Identity;
@@ -29,8 +30,7 @@ internal class IdentityConfigs : IModuleConfiguration
 
         builder.Services.AddScoped<IDataSeeder, IdentityDataSeeder>();
 
-        if (builder.Environment.IsTest() == false)
-            builder.AddCustomIdentityServer();
+        if (builder.Environment.IsTest() == false) builder.AddCustomIdentityServer();
 
         return builder;
     }
@@ -55,10 +55,8 @@ internal class IdentityConfigs : IModuleConfiguration
                 "/user-role",
                 [Authorize(
                     AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
-                    Roles = IdentityConstants.Role.User
-                )]
-                () => new { Role = IdentityConstants.Role.User }
-            )
+                    Roles = IdentityConstants.Role.User)]
+                () => new {Role = IdentityConstants.Role.User})
             .WithTags("Identity");
 
         identityGroupV1
@@ -66,15 +64,14 @@ internal class IdentityConfigs : IModuleConfiguration
                 "/admin-role",
                 [Authorize(
                     AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
-                    Roles = IdentityConstants.Role.Admin
-                )]
-                () => new { Role = IdentityConstants.Role.Admin }
-            )
+                    Roles = IdentityConstants.Role.Admin)]
+                () => new {Role = IdentityConstants.Role.Admin})
             .WithTags("Identity");
 
         // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis?view=aspnetcore-7.0#route-groups
         // https://github.com/dotnet/aspnet-api-versioning/blob/main/examples/AspNetCore/WebApi/MinimalOpenApiExample/Program.cs
         identityGroupV1.MapLoginUserEndpoint();
+        identityGroupV1.MapLoginWithGoogleUserEndpoint();
         identityGroupV1.MapLogoutEndpoint();
         identityGroupV1.MapSendEmailVerificationCodeEndpoint();
         identityGroupV1.MapSendVerifyEmailEndpoint();
