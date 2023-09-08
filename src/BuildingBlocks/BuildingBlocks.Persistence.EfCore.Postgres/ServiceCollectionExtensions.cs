@@ -11,6 +11,7 @@ using BuildingBlocks.Core.Web.Extenions.ServiceCollection;
 using Core.Persistence.Postgres;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Configuration;
@@ -27,19 +28,23 @@ public static class ServiceCollectionExtensions
         Assembly? migrationAssembly = null,
         Action<DbContextOptionsBuilder>? builder = null
     )
-        where TDbContext : DbContext, IDbFacadeResolver, IDomainEventContext
+    where TDbContext : DbContext, IDbFacadeResolver, IDomainEventContext
     {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
         services.AddValidatedOptions<PostgresOptions>(nameof(PostgresOptions));
 
-        services.AddScoped<IConnectionFactory>(sp =>
-        {
-            var postgresOptions = sp.GetService<PostgresOptions>();
-            Guard.Against.NullOrEmpty(postgresOptions?.ConnectionString);
-            return new NpgsqlConnectionFactory(postgresOptions.ConnectionString);
-        });
-
+        services.AddScoped<IConnectionFactory>(
+            sp =>
+            {
+                var postgresOptions = sp.GetService<PostgresOptions>();
+                Guard.Against.NullOrEmpty(postgresOptions?.ConnectionString);
+                return new NpgsqlConnectionFactory(postgresOptions.ConnectionString);
+            });
+        services.AddScoped<SaveChangesInterceptor, AuditInterceptor>();
+        services.AddScoped<SaveChangesInterceptor, SoftDeleteInterceptor>();
+        services.AddScoped<SaveChangesInterceptor, ConcurrencyInterceptor>();
+        // services.AddScoped<SaveChangesInterceptor, EventCommitterInterceptor>();
         services.AddDbContext<TDbContext>(
             (sp, options) =>
             {
@@ -51,29 +56,21 @@ public static class ServiceCollectionExtensions
                         sqlOptions =>
                         {
                             var name =
-                                migrationAssembly?.GetName().Name
-                                ?? postgresOptions.MigrationAssembly
-                                ?? typeof(TDbContext).Assembly.GetName().Name;
+                                migrationAssembly?.GetName().Name ??
+                                postgresOptions.MigrationAssembly ?? typeof(TDbContext).Assembly.GetName().Name;
 
                             sqlOptions.MigrationsAssembly(name);
                             sqlOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
-                        }
-                    )
+                        })
                     // https://github.com/efcore/EFCore.NamingConventions
                     .UseSnakeCaseNamingConvention();
 
                 // ref: https://andrewlock.net/series/using-strongly-typed-entity-ids-to-avoid-primitive-obsession/
                 options.ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector<long>>();
-
-                options.AddInterceptors(
-                    new AuditInterceptor(),
-                    new SoftDeleteInterceptor(),
-                    new ConcurrencyInterceptor()
-                );
+                options.AddInterceptors(sp.GetServices<SaveChangesInterceptor>());
 
                 builder?.Invoke(options);
-            }
-        );
+            });
 
         services.AddScoped<IDbFacadeResolver>(provider => provider.GetService<TDbContext>()!);
         services.AddScoped<IDomainEventContext>(provider => provider.GetService<TDbContext>()!);
@@ -95,8 +92,7 @@ public static class ServiceCollectionExtensions
                     .WithScopedLifetime()
                     .AddClasses(classes => classes.AssignableTo(customRepositoryType))
                     .As(typeof(IPageRepository<>))
-                    .WithScopedLifetime()
-        );
+                    .WithScopedLifetime());
 
         return services;
     }
@@ -105,8 +101,8 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         ServiceLifetime lifeTime = ServiceLifetime.Scoped
     )
-        where TEntity : class, IAggregate<TKey>
-        where TRepository : class, IRepository<TEntity, TKey>
+    where TEntity : class, IAggregate<TKey>
+    where TRepository : class, IRepository<TEntity, TKey>
     {
         return services.RegisterService<IRepository<TEntity, TKey>, TRepository>(lifeTime);
     }
@@ -116,7 +112,7 @@ public static class ServiceCollectionExtensions
         ServiceLifetime lifeTime = ServiceLifetime.Scoped,
         bool registerGeneric = false
     )
-        where TContext : EfDbContextBase
+    where TContext : EfDbContextBase
     {
         if (registerGeneric)
         {
@@ -130,16 +126,22 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         ServiceLifetime lifeTime = ServiceLifetime.Scoped
     )
-        where TService : class
-        where TImplementation : class, TService
+    where TService : class
+    where TImplementation : class, TService
     {
         ServiceDescriptor serviceDescriptor = lifeTime switch
-        {
-            ServiceLifetime.Singleton => ServiceDescriptor.Singleton<TService, TImplementation>(),
-            ServiceLifetime.Scoped => ServiceDescriptor.Scoped<TService, TImplementation>(),
-            ServiceLifetime.Transient => ServiceDescriptor.Transient<TService, TImplementation>(),
-            _ => throw new ArgumentOutOfRangeException(nameof(lifeTime), lifeTime, null)
-        };
+                                              {
+                                                  ServiceLifetime.Singleton =>
+                                                      ServiceDescriptor.Singleton<TService, TImplementation>(),
+                                                  ServiceLifetime.Scoped =>
+                                                      ServiceDescriptor.Scoped<TService, TImplementation>(),
+                                                  ServiceLifetime.Transient => ServiceDescriptor
+                                                      .Transient<TService, TImplementation>(),
+                                                  _ => throw new ArgumentOutOfRangeException(
+                                                           nameof(lifeTime),
+                                                           lifeTime,
+                                                           null)
+                                              };
         services.Add(serviceDescriptor);
         return services;
     }
