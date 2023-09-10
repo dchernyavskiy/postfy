@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Security.Claims;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.SignalR;
 using Postfy.Services.Network.Messages.Dtos;
 using Postfy.Services.Network.Messages.Features.CreatingMessage.v1;
@@ -28,5 +29,15 @@ public class ChatHub : Hub
     public async Task LeaveChat(string chatId)
     {
         await Groups.RemoveFromGroupAsync(Context.ConnectionId, chatId);
+    }
+}
+
+public class NotificationHub : Hub
+{
+    public override async Task OnConnectedAsync()
+    {
+        await base.OnConnectedAsync();
+        var userid = Context.GetHttpContext().Request.Query["userId"];
+        await Groups.AddToGroupAsync(Context.ConnectionId, userid);
     }
 }
