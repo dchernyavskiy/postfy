@@ -9,7 +9,14 @@ using ILogger = Serilog.ILogger;
 namespace Postfy.Services.Network.Users.Features.RegisteringUser.v1;
 
 public record RegisterUser
-    (Guid Id, string FirstName, string LastName, string UserName) : ICommand<RegisterUserResponse>;
+(
+    Guid Id,
+    string Email,
+    string PhoneNumber,
+    string FirstName,
+    string LastName,
+    string UserName
+) : ICommand<RegisterUserResponse>;
 
 public record RegisterUserResponse(User User);
 
@@ -26,6 +33,8 @@ public class RegisterUserHandler : ICommandHandler<RegisterUser, RegisterUserRes
     {
         var user = User.Create(
             request.Id,
+            request.Email,
+            request.PhoneNumber,
             request.FirstName,
             request.LastName,
             request.UserName);

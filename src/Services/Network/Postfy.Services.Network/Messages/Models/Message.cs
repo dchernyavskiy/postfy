@@ -1,6 +1,7 @@
 using System.Collections;
 using BuildingBlocks.Core.Domain;
 using Postfy.Services.Network.Chats.Models;
+using Postfy.Services.Network.Messages.Features.CreatingMessage.v1.Events;
 using Postfy.Services.Network.Posts.Models;
 using Postfy.Services.Network.Shared.Models;
 using Postfy.Services.Network.Users.Models;
@@ -12,6 +13,28 @@ public class Message : Aggregate<Guid>
     public Message()
     {
         Id = Guid.NewGuid();
+    }
+
+    public static Message Create(
+        string text,
+        Guid? postId,
+        Guid chatId,
+        Guid? parentId,
+        bool isPost,
+        Guid senderId
+    )
+    {
+        var message = new Message()
+                      {
+                          Text = text,
+                          PostId = postId,
+                          ChatId = chatId,
+                          ParentId = parentId,
+                          IsPost = isPost,
+                          SenderId = senderId
+                      };
+        message.AddDomainEvents(new MessageCreated(message));
+        return message;
     }
 
     public string Text { get; set; }

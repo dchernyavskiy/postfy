@@ -19,6 +19,8 @@ public class UserRegisteredConsumer : IConsumer<UserRegisteredV1>
     {
         var command = new RegisterUser(
             context.Message.IdentityId,
+            context.Message.Email,
+            context.Message.PhoneNumber,
             context.Message.FirstName,
             context.Message.LastName,
             context.Message.UserName);

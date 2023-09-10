@@ -18,6 +18,7 @@ public record PostBriefDtoBase
     public ICollection<MediaBriefDto> Medias { get; set; }
     public UserBriefDto User { get; set; }
     public bool IsLiked { get; set; }
+    public bool IsSaved { get; set; }
     public int LikeCount { get; set; }
     public int CommentCount { get; set; }
     public DateTime Created { get; set; }
@@ -38,6 +39,10 @@ public record PostBriefDto : PostBriefDtoBase, IMapWith<Post>
                 opts => opts.MapFrom(src => src.Comments.Take(2)))
             .ForMember(
                 x => x.IsLiked,
-                opts => opts.MapFrom(src => src.Reactions.Any(x => x.IsLiked && x.UserId == currentUserId)));
+                opts => opts.MapFrom(src => src.Reactions.Any(x => x.IsLiked && x.UserId == currentUserId)))
+            .ForMember(
+                x => x.IsSaved,
+                opts => opts.MapFrom(src => src.Savers.Any(x => x.Id == currentUserId)))
+            ;
     }
 }

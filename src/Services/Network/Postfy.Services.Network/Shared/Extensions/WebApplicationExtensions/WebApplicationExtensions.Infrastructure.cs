@@ -35,6 +35,7 @@ public static partial class WebApplicationExtensions
         app.UseAuthorization();
 
         app.MapHub<ChatHub>("/signalr/v1/network/chat");
+        app.MapHub<NotificationHub>("/signalr/v1/network/notification");
 
         await app.UsePostgresPersistenceMessage(app.Logger);
         app.UseCustomRateLimit();

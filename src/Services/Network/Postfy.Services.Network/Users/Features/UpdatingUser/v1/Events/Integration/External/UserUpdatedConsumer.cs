@@ -20,8 +20,10 @@ public class UserUpdatedConsumer : IConsumer<UserUpdatedV1>
         var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == context.Message.IdentityId);
         Guard.Against.Null(user);
 
-        if (string.IsNullOrEmpty(context.Message.FirstName)) user.FirstName = context.Message.FirstName;
-        if (string.IsNullOrEmpty(context.Message.LastName)) user.LastName = context.Message.LastName;
-        if (string.IsNullOrEmpty(context.Message.UserName)) user.ProfileName = context.Message.UserName;
+        if (!string.IsNullOrEmpty(context.Message.FirstName)) user.FirstName = context.Message.FirstName;
+        if (!string.IsNullOrEmpty(context.Message.LastName)) user.LastName = context.Message.LastName;
+        if (!string.IsNullOrEmpty(context.Message.UserName)) user.ProfileName = context.Message.UserName;
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync();
     }
 }

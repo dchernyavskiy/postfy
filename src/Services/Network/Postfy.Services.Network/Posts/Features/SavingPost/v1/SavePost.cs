@@ -32,11 +32,20 @@ public class SavePostHandler : ICommandHandler<SavePost, SavePostResponse>
                        cancellationToken: cancellationToken);
         Guard.Against.Null(post);
 
-        user.SavedPosts.Add(post);
+        var result = true;
+        if (user.SavedPosts.All(x => x.Id != post.Id))
+        {
+            user.SavedPosts.Add(post);
+        }
+        else
+        {
+            result = false;
+            user.SavedPosts.Remove(post);
+        }
 
         _context.Users.Update(user);
         await _context.SaveChangesAsync(cancellationToken);
 
-        return new SavePostResponse();
+        return new SavePostResponse(result);
     }
 }

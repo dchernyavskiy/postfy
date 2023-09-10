@@ -50,6 +50,7 @@
     <Folder Include="Reactions\Exceptions\Domain\" />
     <Folder Include="Users\Exceptions\Application\" />
     <Folder Include="Users\Exceptions\Domain\" />
+    <Folder Include="Users\Features\UpdatingUser\v1\" />
   </ItemGroup>
 
   <ItemGroup>

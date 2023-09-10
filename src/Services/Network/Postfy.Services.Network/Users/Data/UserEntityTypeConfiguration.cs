@@ -85,6 +85,8 @@ public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
             //      n.Property(x => x.Position).HasColumnName(nameof(Media.Position).Underscore());
             //  }
         );
+        builder.OwnsOne(x => x.NotificationSettings);
+        builder.OwnsOne(x => x.PrivacySettings);
 
         builder.Property(x => x.FirstName).HasMaxLength(100);
         builder.Property(x => x.LastName).HasMaxLength(100);

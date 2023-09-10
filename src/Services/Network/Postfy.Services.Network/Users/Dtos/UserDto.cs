@@ -13,6 +13,7 @@ public class UserDto : IMapWith<User>
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string ProfileName { get; set; }
+    public string Bio { get; set; }
     public MediaBriefDto? ProfileImage { get; set; }
     public bool IsFollowed { get; set; }
 
