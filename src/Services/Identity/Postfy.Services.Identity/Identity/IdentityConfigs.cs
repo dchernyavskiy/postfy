@@ -50,23 +50,23 @@ internal class IdentityConfigs : IModuleConfiguration
         // create a new sub group for each version
         var identityGroupV2 = identityVersionGroup.MapGroup(IdentityPrefixUri).HasApiVersion(2.0);
 
-        identityGroupV1
-            .MapGet(
-                "/user-role",
-                [Authorize(
-                    AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
-                    Roles = IdentityConstants.Role.User)]
-                () => new {Role = IdentityConstants.Role.User})
-            .WithTags("Identity");
-
-        identityGroupV1
-            .MapGet(
-                "/admin-role",
-                [Authorize(
-                    AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
-                    Roles = IdentityConstants.Role.Admin)]
-                () => new {Role = IdentityConstants.Role.Admin})
-            .WithTags("Identity");
+        // identityGroupV1
+        //     .MapGet(
+        //         "/user-role",
+        //         [Authorize(
+        //             AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
+        //             Roles = IdentityConstants.Role.User)]
+        //         () => new {Role = IdentityConstants.Role.User})
+        //     .WithTags("Identity");
+        //
+        // identityGroupV1
+        //     .MapGet(
+        //         "/admin-role",
+        //         [Authorize(
+        //             AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
+        //             Roles = IdentityConstants.Role.Admin)]
+        //         () => new {Role = IdentityConstants.Role.Admin})
+        //     .WithTags("Identity");
 
         // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis?view=aspnetcore-7.0#route-groups
         // https://github.com/dotnet/aspnet-api-versioning/blob/main/examples/AspNetCore/WebApi/MinimalOpenApiExample/Program.cs
